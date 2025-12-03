@@ -6,12 +6,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rbPlayer;
     private float verticalInput;
     public float forwardSpeed = 5f;
-    public GameObject focalPoint;
-    //private bool hasPowerup = false;
-    //public float powerImpact = 50f;
-    //public GameObject powerupIndicator;
-    //private Vector3 pIoffset;
-    //public GameObject spawnManager;
+    [SerializeField] private GameObject focalPoint;
+    [SerializeField] private GameObject smokeTrail;
+    private bool burning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,11 +24,18 @@ public class PlayerController : MonoBehaviour
     {
         verticalInput = Input.GetAxis("Vertical");
         rbPlayer.AddForce(focalPoint.transform.forward * verticalInput * forwardSpeed);
+        Effects();
         //powerupIndicator.transform.position = transform.position + pIoffset;
         //if (Input.GetKeyDown(KeyCode.K))
         //{
         //    spawnManager.GetComponent<SpawnManagerScript>().TriggerWaves();
         //}
+
+    }
+    
+    void Effects()
+    {
+        smokeTrail.SetActive(burning);
 
     }
 
@@ -54,14 +58,31 @@ public class PlayerController : MonoBehaviour
     //    //powerupIndicator.SetActive(false);
     //}
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Enemy") && hasPowerup)
-    //    {
-    //        Rigidbody enemyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
-    //        Vector3 awayFromPlayer = (collision.gameObject.transform.position - transform.position);
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") )
+        {
+            //Rigidbody enemyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+            //Vector3 awayFromPlayer = (collision.gameObject.transform.position - transform.position);
 
-    //        enemyRigidbody.AddForce(awayFromPlayer * powerImpact, ForceMode.Impulse);
-    //    }
-    //}
+            //enemyRigidbody.AddForce(awayFromPlayer * powerImpact, ForceMode.Impulse);
+            burning = true;
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            burning = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            burning = false;
+        }
+    }
 }

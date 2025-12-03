@@ -5,7 +5,7 @@ public class EnemyScript : MonoBehaviour
 {
     private Rigidbody rbEnemy;
     private GameObject player;
-    public float enemySpeed=1;
+    public float forceToPlayer = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +17,7 @@ public class EnemyScript : MonoBehaviour
     void Update()
     {
         Vector3 lookDirection = (player.transform.position - transform.position).normalized;
-        rbEnemy.AddForce(lookDirection * enemySpeed);
+        rbEnemy.AddForce(lookDirection * forceToPlayer);
         if (transform.position.y < -10)
         {
             Destroy(gameObject);
