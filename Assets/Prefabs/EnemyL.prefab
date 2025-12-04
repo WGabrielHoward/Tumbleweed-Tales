@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 744392609835904184}
   - component: {fileID: 5257056113352207598}
   - component: {fileID: 1888021200970485279}
-  - component: {fileID: 5187625848012935739}
+  - component: {fileID: -5707071427030718475}
   m_Layer: 0
   m_Name: EnemyL
   m_TagString: Enemy
@@ -118,7 +118,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5187625848012935739
+--- !u!114 &-5707071427030718475
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,7 +127,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 854097267668045109}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb84cf9f517132e41ab17ae94aa8145a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1379e7e886ceb7f489a2199669d1c8fd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyScript
-  forceToPlayer: 1
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBurns
+  target: {fileID: 0}
+  forceToTarget: 1
+  health: 10
+  damage: 1

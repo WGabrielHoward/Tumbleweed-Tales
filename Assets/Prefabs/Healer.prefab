@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 744392609835904184}
   - component: {fileID: 5257056113352207598}
   - component: {fileID: 1888021200970485279}
-  - component: {fileID: 3568476115194052907}
-  - component: {fileID: -3992232694823210632}
+  - component: {fileID: 7644422957878627558}
+  - component: {fileID: -629490241945460661}
   m_Layer: 0
-  m_Name: EnemySball
+  m_Name: Healer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 99ad3bfda6671d748b6306b66735915a, type: 2}
+  - {fileID: 2100000, guid: 6e137cb6e494fd34daa05bd9ff5cfc6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -119,7 +119,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3568476115194052907
+--- !u!114 &7644422957878627558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,14 +128,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 854097267668045109}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b17169ffe10eaa4eb74aec3984369eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 6039f04a0833d6b4e8fec1d147281220, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyFreezes
+  m_EditorClassIdentifier: Assembly-CSharp::Healer
   target: {fileID: 0}
   forceToTarget: 1
   health: 10
-  damage: 1
---- !u!135 &-3992232694823210632
+  damage: -1
+--- !u!135 &-629490241945460661
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

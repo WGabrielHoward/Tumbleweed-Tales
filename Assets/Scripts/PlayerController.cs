@@ -7,8 +7,16 @@ public class PlayerController : MonoBehaviour
     private float verticalInput;
     public float forwardSpeed = 5f;
     [SerializeField] private GameObject focalPoint;
-    [SerializeField] private GameObject smokeTrail;
+
+    [SerializeField] private GameObject smoke;
+    [SerializeField] private GameObject frost;
+    [SerializeField] private GameObject healGlow;
+    [SerializeField] private GameObject poisonDrops;
+
     private bool burning;
+    private bool freezing;
+    private bool poisoned;
+    private bool healing;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         verticalInput = Input.GetAxis("Vertical");
         rbPlayer.AddForce(focalPoint.transform.forward * verticalInput * forwardSpeed);
-        Effects();
+        SetEffects();
         //powerupIndicator.transform.position = transform.position + pIoffset;
         //if (Input.GetKeyDown(KeyCode.K))
         //{
@@ -33,10 +41,33 @@ public class PlayerController : MonoBehaviour
 
     }
     
-    void Effects()
+    void SetEffects()
     {
-        smokeTrail.SetActive(burning);
+        smoke.SetActive(burning);
+        frost.SetActive(freezing);
+        healGlow.SetActive(healing);
+        poisonDrops.SetActive(poisoned);
 
+    }
+
+    void EffectsSwitch(GameObject hitObj, bool setting)
+    {
+        Effect tmpEffect = hitObj.GetComponent<NonPlayerCharacter>().GetEffect();
+        switch (tmpEffect)
+        {
+            case Effect.poison:
+                poisoned = setting;
+                break;
+            case Effect.heal:
+                healing = setting;
+                break;
+            case Effect.burn:
+                burning = setting;
+                break;
+            case Effect.freeze:
+                freezing = setting;
+                break;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -62,11 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") )
         {
-            //Rigidbody enemyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
-            //Vector3 awayFromPlayer = (collision.gameObject.transform.position - transform.position);
-
-            //enemyRigidbody.AddForce(awayFromPlayer * powerImpact, ForceMode.Impulse);
-            burning = true;
+            EffectsSwitch(collision.gameObject, true);
         }
     }
 
@@ -74,7 +101,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            burning = true;
+            EffectsSwitch(collision.gameObject, true);
         }
     }
 
@@ -82,7 +109,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            burning = false;
+            EffectsSwitch(collision.gameObject, false);
         }
     }
 }

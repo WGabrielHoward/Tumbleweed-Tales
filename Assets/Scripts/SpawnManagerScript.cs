@@ -72,7 +72,7 @@ public class SpawnManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyCount = FindObjectsByType<EnemyScript>(FindObjectsSortMode.None).Length;
+        enemyCount = FindObjectsByType<NonPlayerCharacter>(FindObjectsSortMode.None).Length;
         if (enemyCount == 0) 
         {
             Instantiate(powerupPrefab, GenerateRandomPosition(), powerupPrefab.transform.rotation);
