@@ -14,7 +14,7 @@ public class NonPlayerCharacter : MonoBehaviour
 {
     private Rigidbody rbThis;
     [SerializeField] private GameObject target;
-    public float forceToTarget = 1;
+    [SerializeField] protected float forceToTarget = 1;
     //public virtual Effect effectType;
     [SerializeField] protected int health = 10;
     [SerializeField] protected int damage = 0;

@@ -4,7 +4,7 @@ public class RotateCamera : MonoBehaviour
 {
 
     private float horizontalInput;
-    public float rotationSpeed;
+    [SerializeField] private float rotationSpeed;
     [SerializeField] private GameObject focalPoint;
    
 

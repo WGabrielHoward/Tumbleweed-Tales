@@ -1,23 +1,32 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rbPlayer;
     private float verticalInput;
-    public float forwardSpeed = 5f;
-    [SerializeField] private GameObject focalPoint;
 
+    [Header("Player View")]
+    [SerializeField] private GameObject focalPoint;
+    [SerializeField] private GameObject healthObj;
+
+    [Header("Player Stats")]
+    [SerializeField] private float forwardSpeed = 5f;
+    [SerializeField] private int health = 100;
+
+    [Header("Particle Effects")]
     [SerializeField] private GameObject smoke;
     [SerializeField] private GameObject frost;
     [SerializeField] private GameObject healGlow;
     [SerializeField] private GameObject poisonDrops;
 
+    private bool healing;
     private bool burning;
     private bool freezing;
     private bool poisoned;
-    private bool healing;
-
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +42,8 @@ public class PlayerController : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         rbPlayer.AddForce(focalPoint.transform.forward * verticalInput * forwardSpeed);
         SetEffects();
+       
+        //healthObj.text = "Health: " + health;
         //powerupIndicator.transform.position = transform.position + pIoffset;
         //if (Input.GetKeyDown(KeyCode.K))
         //{
@@ -43,9 +54,9 @@ public class PlayerController : MonoBehaviour
     
     void SetEffects()
     {
+        healGlow.SetActive(healing);
         smoke.SetActive(burning);
         frost.SetActive(freezing);
-        healGlow.SetActive(healing);
         poisonDrops.SetActive(poisoned);
 
     }
@@ -55,11 +66,11 @@ public class PlayerController : MonoBehaviour
         Effect tmpEffect = hitObj.GetComponent<NonPlayerCharacter>().GetEffect();
         switch (tmpEffect)
         {
-            case Effect.poison:
-                poisoned = setting;
-                break;
             case Effect.heal:
                 healing = setting;
+                break;
+            case Effect.poison:
+                poisoned = setting;
                 break;
             case Effect.burn:
                 burning = setting;
@@ -70,11 +81,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Hit(GameObject other)
+    {
+        int damage = other.GetComponent<NonPlayerCharacter>().GetDamage();
+        StartCoroutine(TakeDamage(damage));
+    }
+
+    IEnumerator TakeDamage(int damage)
+    {
+        yield return new WaitForSeconds(.5f);
+        health -= damage;
+        healthObj.GetComponent<Text>().text = "Health: " + health;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy") )
         {
             EffectsSwitch(collision.gameObject, true);
+            //Hit(collision.gameObject);
         }
     }
 
@@ -83,6 +108,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EffectsSwitch(collision.gameObject, true);
+            Hit(collision.gameObject);
         }
     }
 
@@ -99,6 +125,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             EffectsSwitch(other.gameObject, true);
+            //Hit(other.gameObject);
         }
     }
 
@@ -107,6 +134,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             EffectsSwitch(other.gameObject, true);
+            Hit(other.gameObject);
         }
     }
 

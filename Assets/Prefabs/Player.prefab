@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5704697433308227483}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.76523, y: 0.5584533, z: -0.7541565}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -183,9 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4731c7c9b4f527a4fa1f9a12948cb9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  focalPoint: {fileID: 8335655758499488490}
+  healthObj: {fileID: 0}
   forwardSpeed: 5
-  focalPoint: {fileID: 0}
-  smoke: {fileID: 0}
+  health: 10
+  smoke: {fileID: 76054345703408551}
   frost: {fileID: 1049493637593703138}
   healGlow: {fileID: 5270942930907162561}
   poisonDrops: {fileID: 4182602756414127469}
@@ -313,6 +315,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f598c2904aae8d74ca04eac73fd7b5bb, type: 3}
+--- !u!1 &76054345703408551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5795724325177683253, guid: f598c2904aae8d74ca04eac73fd7b5bb, type: 3}
+  m_PrefabInstance: {fileID: 5863897371456876178}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1244553984259702955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4622158688014069305, guid: f598c2904aae8d74ca04eac73fd7b5bb, type: 3}
@@ -382,6 +389,11 @@ PrefabInstance:
 --- !u!4 &2609036921113239336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8118583732819898004, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
+  m_PrefabInstance: {fileID: 6097356737259237820}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8335655758499488490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2823786765891326806, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
   m_PrefabInstance: {fileID: 6097356737259237820}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8223042532962965936
