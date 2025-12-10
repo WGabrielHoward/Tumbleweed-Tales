@@ -9,7 +9,6 @@ Key Features:
 
 ToDo:
 - add jump?
-- points
 - power ups
 - outward force wave
   
