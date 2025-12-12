@@ -56,13 +56,23 @@ public class PersistentData : MonoBehaviour
 
     public void SaveTopScore()
     {
+        // Making new saveData
         SaveData data = new SaveData();
         data.topPoints = topPoints;
         data.topPointsName = topPointsName;
 
+        // Serializing to json
         string json = JsonUtility.ToJson(data);
-
+        // Saving
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+
+        // For WebGL builds, explicitly sync files with the browser's filesystem
+//#if UNITY_WEBGL
+        PlayerPrefs.SetString("GameSaveData", json);
+        // Important: You must call PlayerPrefs.Save() explicitly in WebGL
+        // as OnApplicationQuit is not called by the browser.
+        PlayerPrefs.Save();
+//#endif
     }
 
     public void LoadTopScore()
@@ -76,6 +86,17 @@ public class PersistentData : MonoBehaviour
             topPoints = data.topPoints;
             topPointsName = data.topPointsName;
         }
+        // For WebGL builds, explicitly sync files with the browser's filesystem
+//#if UNITY_WEBGL
+        if (PlayerPrefs.HasKey("GameSaveData"))
+        {
+            string jsonString = PlayerPrefs.GetString("GameSaveData");
+            SaveData data = JsonUtility.FromJson<SaveData>(jsonString);
+            topPoints = data.topPoints;
+            topPointsName = data.topPointsName;
+        }
+        
+//#endif
     }
 
     public void ClearTopScore()
