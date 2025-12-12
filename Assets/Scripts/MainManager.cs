@@ -1,37 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum PlayState
+{
+    waiting,
+    playing,
+    paused,
+    gameOver,
+    undefined
+}
+
 public class MainManager : MonoBehaviour
 {
+    private int m_Points;       // Should I move this to the player?
+    private static PlayState state;
 
-    public TMPro.TextMeshProUGUI ScoreText;
-    public TMPro.TextMeshProUGUI TopScore;
-    public GameObject GameOverText;
-    
-    //private bool m_Started = false;
-    private int m_Points;
-    private bool m_GameOver = false;
-    private bool paused;
-
-    public static PersistentData pData = PersistentData.Instance;
+    public static PersistentData pData;
     public static MainManager ManInstance;
 
-    // Start is called before the first frame update
-    void Start()
+    private LevelCanvas levelCanvas;
+
+    private void Awake()
     {
-        // start of new code
         if (ManInstance != null)
         {
             Destroy(gameObject);
             return;
         }
-        // end of new code
+
+        m_Points = 0;
 
         ManInstance = this;
+        state = PlayState.waiting;
+        pData = PersistentData.Instance;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_Points = 0;
+        state = PlayState.playing;
+
+        levelCanvas = FindAnyObjectByType<LevelCanvas>();
+        
         UpdateTopScore();   
     }
 
@@ -46,32 +63,28 @@ public class MainManager : MonoBehaviour
         //    }
             
         //}
-        if (m_GameOver)
+        if (GetState()==PlayState.gameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-                m_GameOver = false;
-                //Play();
+                Play();
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
                 SceneManager.LoadScene("TitleScreen");
-                m_GameOver = false;
                 //Play();
             }
             if (Input.GetKeyDown(KeyCode.C))
             {
                 pData.ClearTopScore();
-                m_GameOver = false;
-                //Play();
             }
         }
         else 
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                if (paused)
+                if (GetState() == PlayState.paused)
                 {
                     Play();
                 }
@@ -83,38 +96,63 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    private void SetState(PlayState newState)
+    {
+        state = newState;
+    }
+
     public void AddPoints(int points)
     {
         m_Points += points;
-        ScoreText.text = $"Score : {m_Points}";
+        levelCanvas.ScoreUpdate();
         PersistentData.Instance.ScoreUpdate(m_Points);
         UpdateTopScore();
+    }
+    
+    public int GetScore()
+    {
+        return m_Points;
     }
 
     public void UpdateTopScore()
     {
-        UnityEngine.Debug.Log("UpdateTopScore Called");
-        TopScore.text = $"Top Score: {pData.GetTopName()} {pData.GetTopPoints()}";
+        levelCanvas.TopScoreUpdate();
+    }
+
+    public string GetTopScoreText()
+    {
+        string topScoreText = $"Top Score: {pData.GetTopName()} {pData.GetTopPoints()}";
+        return topScoreText;
     }
 
     public void GameOver()
     {
         //Pause();
-        m_GameOver = true;
-        GameOverText.SetActive(true);
+        //Time.timeScale = 0f;
+        SetState(PlayState.gameOver);
         pData.SaveTopScore();
+    }
+
+    public PlayState GetState()
+    {
+        return state;
     }
 
     public void Pause()
     {
-        paused = true;
+        SetState(PlayState.paused);
         Time.timeScale = 0f;
     }
 
     public void Play()
     {
-        paused = false;
+        SetState(PlayState.playing);
         Time.timeScale = 1f;
     }
 
+    public void Dump()
+    {
+        UnityEngine.Debug.Log("mainManager Exists!");
+
+    }
 }

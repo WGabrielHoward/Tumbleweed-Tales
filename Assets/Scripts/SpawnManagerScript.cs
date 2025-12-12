@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
+using Scripts.NPC;
+
 public class SpawnManagerScript : MonoBehaviour
 {
     public GameObject enemyPrefab;

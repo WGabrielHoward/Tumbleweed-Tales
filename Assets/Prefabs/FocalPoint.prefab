@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8118583732819898004}
   - component: {fileID: 3941088906266871449}
-  - component: {fileID: 1639765004539333591}
+  - component: {fileID: 2529205648744941342}
   m_Layer: 0
   m_Name: FocalPoint
   m_TagString: Untagged
@@ -61,7 +61,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &1639765004539333591
+--- !u!114 &2529205648744941342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,9 +70,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2823786765891326806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9765b890bf70b98489f61d09eaff96b4, type: 3}
+  m_Script: {fileID: 11500000, guid: eb5ce5e6efdeb734ba2e7b1cad9b22f5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RotateCamera
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.RotateCamera
   rotationSpeed: 200
   focalPoint: {fileID: 0}
 --- !u!1 &5215045944188872443

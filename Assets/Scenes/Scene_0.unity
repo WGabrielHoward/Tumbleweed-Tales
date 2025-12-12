@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 190722391}
   - component: {fileID: 190722390}
   - component: {fileID: 190722389}
+  - component: {fileID: 190722394}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -347,6 +348,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!182 &190722394
+WindZone:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190722388}
+  m_Enabled: 1
+  m_Mode: 1
+  m_Radius: 20
+  m_WindMain: 1
+  m_WindTurbulence: 1
+  m_WindPulseMagnitude: 0.5
+  m_WindPulseFrequency: 0.01
 --- !u!1 &220212648 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3215012616549458088, guid: ba3de2a1aceb46c42919cb4450e51ab5, type: 3}
@@ -360,6 +375,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1176109421}
     m_Modifications:
+    - target: {fileID: 1178774782066394124, guid: ba3de2a1aceb46c42919cb4450e51ab5, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1386594374}
     - target: {fileID: 1695658886853642856, guid: ba3de2a1aceb46c42919cb4450e51ab5, type: 3}
       propertyPath: target
       value: 
@@ -408,7 +427,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1695658886853642856, guid: ba3de2a1aceb46c42919cb4450e51ab5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1506,17 +1526,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caa0a79796530044f98f402f6f9e39a2, type: 3}
---- !u!114 &574535452 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1224644071831095274, guid: caa0a79796530044f98f402f6f9e39a2, type: 3}
-  m_PrefabInstance: {fileID: 574535451}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &576048396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1573,6 +1582,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyPoison
       objectReference: {fileID: 0}
+    - target: {fileID: 6477267858556684228, guid: 1bbc79917b8a2d64ab940e88d6ad510b, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1386594374}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2381,6 +2394,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1176109421}
     m_Modifications:
+    - target: {fileID: 6000360098171154095, guid: d94b922ef981e7a448027da8c9a201ed, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1386594374}
     - target: {fileID: 6095171411835330763, guid: d94b922ef981e7a448027da8c9a201ed, type: 3}
       propertyPath: target
       value: 
@@ -2857,6 +2874,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1176109421}
     m_Modifications:
+    - target: {fileID: 5977765695098164746, guid: 13abccdfad2b4604d9cdb0fe0fc09c2d, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1386594374}
     - target: {fileID: 6135771412728862830, guid: 13abccdfad2b4604d9cdb0fe0fc09c2d, type: 3}
       propertyPath: target
       value: 
@@ -3412,37 +3433,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3213268294454512393, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-      propertyPath: smoke
-      value: 
-      objectReference: {fileID: 1747519313}
-    - target: {fileID: 3213268294454512393, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-      propertyPath: healthObj
-      value: 
-      objectReference: {fileID: 574535452}
-    - target: {fileID: 3213268294454512393, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-      propertyPath: focalPoint
-      value: 
-      objectReference: {fileID: 1747519312}
+    - target: {fileID: 5270942930907162561, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
+      propertyPath: m_Name
+      value: HealingGlow
+      objectReference: {fileID: 0}
     - target: {fileID: 5704697433308227483, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3213268294454512393, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
---- !u!1 &1747519312 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8335655758499488490, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-  m_PrefabInstance: {fileID: 1747519311}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1747519313 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 76054345703408551, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-  m_PrefabInstance: {fileID: 1747519311}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1810922494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3495,6 +3499,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Healer
       objectReference: {fileID: 0}
+    - target: {fileID: 4626065854874775726, guid: 2c5e7e99d893ad14ba7f879c266ea8d5, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 190722388}
     - target: {fileID: 7644422957878627558, guid: 2c5e7e99d893ad14ba7f879c266ea8d5, type: 3}
       propertyPath: damage
       value: -2
@@ -3503,7 +3511,8 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 220212648}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7644422957878627558, guid: 2c5e7e99d893ad14ba7f879c266ea8d5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3686,6 +3695,10 @@ PrefabInstance:
       value: EnemySnowball
       objectReference: {fileID: 0}
     - target: {fileID: 3568476115194052907, guid: d8bf23c156264ff469ec9d2f39ceff2d, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1386594374}
+    - target: {fileID: 4941540267258469879, guid: d8bf23c156264ff469ec9d2f39ceff2d, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1386594374}

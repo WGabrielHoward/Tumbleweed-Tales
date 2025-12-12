@@ -181,9 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b49fa154a682f47b1753d5fee615d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainManager
-  ScoreText: {fileID: 1350266420199041444}
-  TopScore: {fileID: 2156213295879287728}
-  GameOverText: {fileID: 4885255364278434413}
 --- !u!1 &2854832399629692513
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +851,7 @@ GameObject:
   - component: {fileID: 321317417986703483}
   - component: {fileID: 868842604644499610}
   - component: {fileID: 8624931438204113511}
+  - component: {fileID: 8362872172988561009}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -955,3 +953,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8855876715896454414}
   m_CullTransparentMesh: 1
+--- !u!114 &8362872172988561009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8855876715896454414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216d3700f805ad14eb33556efa7c61cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelCanvas
+  ScoreText: {fileID: 1350266420199041444}
+  TopScore: {fileID: 2156213295879287728}
+  HealthText: {fileID: 1224644071831095274}
+  GameOverText: {fileID: 4885255364278434413}

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 744392609835904184}
   - component: {fileID: 5257056113352207598}
   - component: {fileID: 1888021200970485279}
-  - component: {fileID: 3568476115194052907}
   - component: {fileID: -3992232694823210632}
+  - component: {fileID: 4941540267258469879}
   m_Layer: 0
   m_Name: EnemySball
   m_TagString: Enemy
@@ -119,22 +119,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3568476115194052907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854097267668045109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b17169ffe10eaa4eb74aec3984369eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyFreezes
-  target: {fileID: 0}
-  forceToTarget: 1
-  health: 10
-  damage: 1
 --- !u!135 &-3992232694823210632
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -156,3 +140,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4941540267258469879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854097267668045109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 635b2dc76e0cd6840bb62e3f3693d70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NPC.EnemyFreezes
+  target: {fileID: 0}
+  forceToTarget: 1
+  health: 10
+  damage: 1
