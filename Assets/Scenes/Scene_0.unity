@@ -3632,16 +3632,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270942930907162561, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
-      propertyPath: m_Name
-      value: HealingGlow
-      objectReference: {fileID: 0}
     - target: {fileID: 5704697433308227483, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3213268294454512393, guid: a39e194af1b97ba4b827d5357d083873, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

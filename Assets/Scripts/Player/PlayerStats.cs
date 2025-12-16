@@ -7,16 +7,26 @@ namespace Scripts.Player
 {
     public class PlayerStats : MonoBehaviour
     {
+        private PlayerScriptManager playSMan;
+        private PlayerController playerController;
 
         [Header("Player Stats")]
-        [SerializeField] private float forwardSpeed = 5f;
-        [SerializeField] private int health = 100;
+        [SerializeField] private float forwardSpeed;
+        [SerializeField] private int health;
 
         LevelCanvas levelCanvas;
 
+        private void Awake()
+        {
+            playSMan = gameObject.GetComponent<PlayerScriptManager>();
+            
+        }
         private void Start()
         {
             levelCanvas = FindAnyObjectByType<LevelCanvas>();
+            playerController = playSMan.GetPlayerController();
+            PullForwardSpeed();
+            PullHealth();
         }
 
         public float GetForwardSpeed()
@@ -24,22 +34,21 @@ namespace Scripts.Player
             return forwardSpeed;
         }
 
-        //public void Hit(GameObject other)
-        //{
-        //    int damage = other.GetComponent<NonPlayerCharacter>().GetDamage();
-        //    StartCoroutine(TakeDamage(damage));
-        //}
+        public void SetForwardSpeed(float newSpeed)
+        {
+            forwardSpeed = newSpeed;
+            playerController.SetForwardSpeed(forwardSpeed);
+        }
 
-        //IEnumerator TakeDamage(int damage)
-        //{
-        //    yield return new WaitForSeconds(.5f);
-        //    health -= damage;
-        //    UpdateHealthText();
-        //    if (health <= 0)
-        //    {
-        //        LevelManager.ManInstance.GameOver();
-        //    }
-        //}
+        private void PullForwardSpeed()
+        {
+            forwardSpeed = playSMan.GetForwardSpeed();
+        }
+        private void PullHealth()
+        {
+            health = playSMan.GetHealth();
+        }
+
 
         public void Damage(int damage)
         {

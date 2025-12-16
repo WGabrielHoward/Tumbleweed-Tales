@@ -15,7 +15,6 @@ public class Gem : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            UnityEngine.Debug.Log("Destroy the Gem!!!!");
             //onDestroyed.Invoke(pointValue);
             LevelManager.ManInstance.AddPoints(pointValue);
             Destroy(gameObject);

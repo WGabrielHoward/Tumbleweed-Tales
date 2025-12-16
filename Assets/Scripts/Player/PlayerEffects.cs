@@ -7,6 +7,7 @@ namespace Scripts.Player
 {
     public class PlayerEffects : MonoBehaviour
     {
+        private PlayerScriptManager playSMan;
 
         [Header("Particle Effects")]
         private GameObject smoke;
@@ -19,6 +20,11 @@ namespace Scripts.Player
         private bool freezing;
         private bool poisoned;
 
+        private void Awake()
+        {
+            playSMan = gameObject.GetComponent<PlayerScriptManager>();
+            
+        }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

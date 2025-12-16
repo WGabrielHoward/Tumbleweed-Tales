@@ -9,10 +9,21 @@ namespace Scripts.Player
     {
 
         private PlayerEffects playerEffects;
+        private PlayerScriptManager playSMan;
 
+        private void Awake()
+        {
+            playSMan = gameObject.GetComponent<PlayerScriptManager>();
+            
+        }
         private void Start()
         {
-            playerEffects = gameObject.GetComponent<PlayerEffects>();
+            playerEffects = playSMan.GetPlayerEffects();
+        }
+
+        public void SetEffectScript(PlayerEffects effectScript)
+        {
+            playerEffects = effectScript;
         }
 
 

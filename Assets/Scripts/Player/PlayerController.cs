@@ -9,17 +9,25 @@ namespace Scripts.Player
     {
         private Rigidbody rbPlayer;
         private float verticalInput;
-        private float forwardSpeed = 0;
+        private float forwardSpeed;
 
         [Header("Player View")]
         private GameObject focalPoint;
+        private PlayerScriptManager playSMan;
+
+        private void Awake()
+        {
+            playSMan = gameObject.GetComponent<PlayerScriptManager>();
+           
+            
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            rbPlayer = this.gameObject.GetComponent<Rigidbody>();
-            focalPoint = GameObject.Find("FocalPoint");
-            SetForwardSpeed(this.gameObject.GetComponent<PlayerStats>().GetForwardSpeed());
+            PullForwardSpeed();
+            PullFocalPoint();
+            PullRigidbody();
         }
 
         // Update is called once per frame
@@ -30,12 +38,25 @@ namespace Scripts.Player
             rbPlayer.AddForce(focalPoint.transform.forward * verticalInput * forwardSpeed);
 
         }
-
-        private void SetForwardSpeed(float newSpeed)
+        public void SetForwardSpeed(float newSpeed)
         {
             forwardSpeed = newSpeed;
         }
 
+        private void PullRigidbody()
+        {
+            rbPlayer = playSMan.GetRigidbody();
+        }
+
+        private void PullForwardSpeed()
+        {
+            forwardSpeed = playSMan.GetForwardSpeed();
+        }
+
+        private void PullFocalPoint()
+        {
+            focalPoint = playSMan.GetFocalPoint();
+        }
 
     }
 }

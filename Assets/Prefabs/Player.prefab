@@ -13,10 +13,7 @@ GameObject:
   - component: {fileID: 156292594917688907}
   - component: {fileID: 8905805472891463884}
   - component: {fileID: 6486804981573182038}
-  - component: {fileID: 3165103287717300163}
-  - component: {fileID: 7270332071947003729}
-  - component: {fileID: 3242695527715321242}
-  - component: {fileID: 3121311145134180518}
+  - component: {fileID: 3204288870323030488}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -148,7 +145,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3165103287717300163
+--- !u!114 &3204288870323030488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,47 +154,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5704697433308227483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247b4843e49e2e946aa58ad0642a881b, type: 3}
+  m_Script: {fileID: 11500000, guid: 649c5554e72035c419822453a47c3a4f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerController
---- !u!114 &7270332071947003729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704697433308227483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef38008965b2ff74d879510d601f16be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerStats
-  forwardSpeed: 5
-  health: 100
---- !u!114 &3242695527715321242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704697433308227483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f154040da46c3d4eae533815c698123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerEffects
---- !u!114 &3121311145134180518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704697433308227483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a28641f413b07d7488ebe74f71cde04b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerColliderAndTrigger
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerScriptManager
+  defaultForwardSpeed: 5
+  defaultHealth: 100
+  focalPoint: {fileID: 8335655758499488490}
 --- !u!1001 &3519924778876387097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -208,7 +170,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8790866238757034200, guid: 479ab048e45ae594e970dfb9f30e5b22, type: 3}
       propertyPath: m_Name
-      value: Healing Glow
+      value: HealingGlow
       objectReference: {fileID: 0}
     - target: {fileID: 8848430640361736361, guid: 479ab048e45ae594e970dfb9f30e5b22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -334,6 +296,10 @@ PrefabInstance:
       propertyPath: focalPoint
       value: 
       objectReference: {fileID: 5704697433308227483}
+    - target: {fileID: 2529205648744941342, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
+      propertyPath: focalPoint
+      value: 
+      objectReference: {fileID: 5704697433308227483}
     - target: {fileID: 2823786765891326806, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
       propertyPath: m_Name
       value: FocalPoint
@@ -387,6 +353,11 @@ PrefabInstance:
 --- !u!4 &2609036921113239336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8118583732819898004, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
+  m_PrefabInstance: {fileID: 6097356737259237820}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8335655758499488490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2823786765891326806, guid: ea607e188db4f5f42ab4162e63d68370, type: 3}
   m_PrefabInstance: {fileID: 6097356737259237820}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8223042532962965936
