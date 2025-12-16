@@ -8,9 +8,7 @@ namespace Scripts.NPC
     {
         protected override void Start()
         {
-            rbThis = gameObject.GetComponent<Rigidbody>();
             this.target = GameObject.Find("Player");
-            thisEffect = gameObject.AddComponent<EffectScript>();
         }
     }
 }

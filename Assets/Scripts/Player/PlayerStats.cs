@@ -24,22 +24,22 @@ namespace Scripts.Player
             return forwardSpeed;
         }
 
-        public void Hit(GameObject other)
-        {
-            int damage = other.GetComponent<NonPlayerCharacter>().GetDamage();
-            StartCoroutine(TakeDamage(damage));
-        }
+        //public void Hit(GameObject other)
+        //{
+        //    int damage = other.GetComponent<NonPlayerCharacter>().GetDamage();
+        //    StartCoroutine(TakeDamage(damage));
+        //}
 
-        IEnumerator TakeDamage(int damage)
-        {
-            yield return new WaitForSeconds(.5f);
-            health -= damage;
-            UpdateHealthText();
-            if (health <= 0)
-            {
-                LevelManager.ManInstance.GameOver();
-            }
-        }
+        //IEnumerator TakeDamage(int damage)
+        //{
+        //    yield return new WaitForSeconds(.5f);
+        //    health -= damage;
+        //    UpdateHealthText();
+        //    if (health <= 0)
+        //    {
+        //        LevelManager.ManInstance.GameOver();
+        //    }
+        //}
 
         public void Damage(int damage)
         {

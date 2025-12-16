@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2876191508625405102}
   - component: {fileID: 3629028600670920041}
   - component: {fileID: -1790308570284299551}
+  - component: {fileID: -2902067521061668936}
   m_Layer: 0
   m_Name: HealingPad
   m_TagString: NPC
@@ -125,3 +126,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectScript
   thisEffect: 6
+--- !u!114 &-2902067521061668936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6781310738805368340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5d18272a2272d40bbb1d938646e166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageOverTime
+  damagePerTick: -1
+  tickRate: 1
