@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3972035694878632337}
   m_Layer: 0
   m_Name: EnemyL
-  m_TagString: Enemy
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,4 +134,4 @@ MonoBehaviour:
   forceToTarget: 1
   health: 10
   damage: 1
-  thisEffect: 3
+  thisEffect: {fileID: 0}

@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Powerup
   - Victory
+  - NPC
+  - Effect
   layers:
   - Default
   - TransparentFX

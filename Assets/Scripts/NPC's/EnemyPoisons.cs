@@ -11,7 +11,8 @@ namespace Scripts.NPC
         {
             rbThis = gameObject.GetComponent<Rigidbody>();
             this.target = GameObject.Find("Player");
-            SetEffect(EffectScript.Effect.poison);
+            thisEffect = gameObject.AddComponent<EffectScript>();
+            SetEffect(Effect.poison);
         }
     }
 }

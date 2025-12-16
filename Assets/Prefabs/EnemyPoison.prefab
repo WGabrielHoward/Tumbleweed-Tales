@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6477267858556684228}
   m_Layer: 0
   m_Name: EnemyPoison
-  m_TagString: Enemy
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36ba718dcff20c04fb214a9274816c68, type: 2}
+  - {fileID: 2100000, guid: 58960d56fa451364c9b800c620267f2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,4 +156,4 @@ MonoBehaviour:
   forceToTarget: 1
   health: 10
   damage: 1
-  thisEffect: 5
+  thisEffect: {fileID: 0}

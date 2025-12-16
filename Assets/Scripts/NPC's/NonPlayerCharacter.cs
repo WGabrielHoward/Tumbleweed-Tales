@@ -12,14 +12,14 @@ namespace Scripts.NPC
         //public virtual Effect effectType;
         [SerializeField] protected int health = 10;
         [SerializeField] protected int damage = 0;
-        [SerializeField] protected EffectScript.Effect thisEffect;
+        public EffectScript thisEffect; // How can I add this as a component so that other scripts can just get it outside of NPC?
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         protected virtual void Start()
         {
             rbThis = gameObject.GetComponent<Rigidbody>();
-            
-            
+            thisEffect = gameObject.AddComponent<EffectScript>();
+
         }
 
         // Update is called once per frame
@@ -53,13 +53,13 @@ namespace Scripts.NPC
             Destroy(gameObject);
         }
 
-        public virtual EffectScript.Effect GetEffect()
+        public virtual Effect GetEffect()
         {
-            return thisEffect;
+            return thisEffect.GetEffect();
         }
-        public virtual void SetEffect(EffectScript.Effect newEffect)
+        public virtual void SetEffect(Effect newEffect)
         {
-            thisEffect = newEffect;
+            thisEffect.SetEffect(newEffect);
         }
 
         public virtual int GetDamage()

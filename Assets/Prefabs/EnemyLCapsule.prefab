@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 854097267668045109, guid: d6c39c32343a65d47afa53c2aed07555, type: 3}
       propertyPath: m_Name
-      value: EnemyCapsule
+      value: EnemyLCapsule
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3941862803628208407, guid: d6c39c32343a65d47afa53c2aed07555, type: 3}

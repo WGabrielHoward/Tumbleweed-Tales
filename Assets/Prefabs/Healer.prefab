@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4626065854874775726}
   m_Layer: 0
   m_Name: Healer
-  m_TagString: Enemy
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,4 +156,4 @@ MonoBehaviour:
   forceToTarget: 1
   health: 10
   damage: -1
-  thisEffect: 6
+  thisEffect: {fileID: 0}

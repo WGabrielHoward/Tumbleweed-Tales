@@ -1,25 +1,39 @@
 
 using UnityEngine;
 
-public class EffectScript: MonoBehaviour
-{
 
-    public enum Effect
+public enum Effect
+{
+    unnassigned,
+    none,
+    damage,
+    burn,
+    freeze,
+    poison,
+    heal
+    
+}
+
+public class EffectScript : MonoBehaviour
+{
+    [SerializeField] private Effect thisEffect;
+
+    void Start()
     {
-        unnassigned,
-        none,
-        damage,
-        burn,
-        freeze,
-        poison,
-        heal
-        
+        if (thisEffect==Effect.unnassigned)
+        {
+            thisEffect = Effect.none;
+        }
     }
-    //public Effect thisEffect;
 
     public virtual Effect GetEffect()
     {
-        return Effect.unnassigned;
+        return thisEffect;
+    }
+
+    public virtual void SetEffect(Effect newEffect)
+    {
+        thisEffect = newEffect;
     }
 
 }

@@ -10,6 +10,7 @@ namespace Scripts.NPC
         {
             rbThis = gameObject.GetComponent<Rigidbody>();
             this.target = GameObject.Find("Player");
+            thisEffect = gameObject.AddComponent<EffectScript>();
         }
     }
 }

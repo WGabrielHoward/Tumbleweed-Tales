@@ -18,22 +18,24 @@ namespace Scripts.Player
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("NPC"))
             {
                 playerEffects.EffectsSwitch(collision.gameObject, true);
-                //Hit(collision.gameObject);
             }
             if (collision.gameObject.CompareTag("Victory"))
             {
                 LevelManager.ManInstance.Victory();
             }
+            if (collision.gameObject.CompareTag("Effect"))
+            {
+                playerEffects.EffectsSwitch(collision.gameObject, true);
+            }
         }
 
         private void OnCollisionStay(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("NPC"))
             {
-                playerEffects.EffectsSwitch(collision.gameObject, true);
                 int damage = collision.gameObject.GetComponent<NonPlayerCharacter>().GetDamage();
                 this.GetComponent<PlayerStats>().Damage(damage);
             }
@@ -41,7 +43,11 @@ namespace Scripts.Player
 
         private void OnCollisionExit(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("NPC"))
+            {
+                playerEffects.EffectsSwitch(collision.gameObject, false);
+            }
+            if (collision.gameObject.CompareTag("Effect"))
             {
                 playerEffects.EffectsSwitch(collision.gameObject, false);
             }
@@ -49,22 +55,24 @@ namespace Scripts.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("NPC"))
             {
                 playerEffects.EffectsSwitch(other.gameObject, true);
-                //Hit(other.gameObject);
             }
             if (other.gameObject.CompareTag("Victory"))
             {
                 LevelManager.ManInstance.Victory();
             }
+            if (other.gameObject.CompareTag("Effect"))
+            {
+                playerEffects.EffectsSwitch(other.gameObject, true);
+            }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("NPC"))
             {
-                playerEffects.EffectsSwitch(other.gameObject, true);
                 int damage = other.gameObject.GetComponent<NonPlayerCharacter>().GetDamage();
                 this.GetComponent<PlayerStats>().Damage(damage);
             }
@@ -73,7 +81,11 @@ namespace Scripts.Player
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("NPC"))
+            {
+                playerEffects.EffectsSwitch(other.gameObject, false);
+            }
+            if (other.gameObject.CompareTag("Effect"))
             {
                 playerEffects.EffectsSwitch(other.gameObject, false);
             }
