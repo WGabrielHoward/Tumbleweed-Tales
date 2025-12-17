@@ -1,6 +1,6 @@
-# Programming Sandbox
+# TumbleWeed Tales (Sandbox project for Unity Programming)
 
-Description: Plant sphere followed by enemies
+Description: Plant sphere (green tumbleweed) followed by enemies
 
 Key Features:
 - programming practices (polymorphism, inheritance, abstraction, encapsulation)
