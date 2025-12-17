@@ -138,5 +138,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5d18272a2272d40bbb1d938646e166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageOverTime
-  damagePerTick: -1
+  damagePerTick: -10
   tickRate: 1

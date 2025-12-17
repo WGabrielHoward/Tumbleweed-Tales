@@ -4,6 +4,7 @@ using System.IO;
 public class PersistentData : MonoBehaviour
 {
     public string playerName;
+    public int playerTotalPoints;
     // public int playerPoints // by level?
 
     private int topPoints;
@@ -25,6 +26,12 @@ public class PersistentData : MonoBehaviour
         LoadTopScore();
     }
 
+    // This does not include ongoing level
+    public int GetTotalScore()
+    {
+        return playerTotalPoints;
+    }
+
     public string GetTopName()
     {
         string topName = topPointsName;
@@ -37,15 +44,20 @@ public class PersistentData : MonoBehaviour
         return highScore;
     }
 
-    public void ScoreUpdate(int currentPoints)
+    public void AddToTotalScore(int levelScore)
     {
-        if (currentPoints > topPoints)
+        playerTotalPoints += levelScore;
+        TopScoreUpdate();
+    }
+
+    public void TopScoreUpdate()
+    {
+        if (playerTotalPoints > topPoints)
         {
-            topPoints = currentPoints;
+            topPoints = playerTotalPoints;
             topPointsName = playerName;
         }
     }
-
 
     [System.Serializable]
     class SaveData
@@ -97,6 +109,11 @@ public class PersistentData : MonoBehaviour
         }
         
 //#endif
+    }
+
+    public void ClearTotalScore()
+    {
+        playerTotalPoints = 0;
     }
 
     public void ClearTopScore()

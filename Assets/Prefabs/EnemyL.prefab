@@ -134,7 +134,7 @@ MonoBehaviour:
   forceToTarget: 1
   health: 10
   damage: 1
-  damagePerTick: 1
+  damagePerTick: 10
   tickRate: 1
   thisEffect: {fileID: 0}
   damageOverTime: {fileID: 0}

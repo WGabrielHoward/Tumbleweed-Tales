@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(1000)]
-public class MenuUI : MonoBehaviour
+public class TitleMenuUI : MonoBehaviour
 {
 
     [SerializeField] private TMPro.TextMeshProUGUI TopScore;
@@ -20,9 +20,11 @@ public class MenuUI : MonoBehaviour
         if (PersistentData.Instance != null)
         {
             TopScoreUpdate();
+            ClearTotalScore();
         }
         hiddenObj.SetActive(false);
         hidden = true;
+        
     }
 
     public void StartPlay()
@@ -44,6 +46,11 @@ public class MenuUI : MonoBehaviour
     {
         PersistentData.Instance.ClearTopScore();
         TopScoreUpdate();
+    }
+
+    public void ClearTotalScore()
+    {
+        PersistentData.Instance.ClearTotalScore();
     }
 
     public void HideOrReveal()

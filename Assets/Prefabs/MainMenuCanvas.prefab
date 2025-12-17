@@ -309,8 +309,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9107264008074821941}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+      - m_Target: {fileID: 7947464342779306019}
+        m_TargetAssemblyTypeName: TitleMenuUI, Assembly-CSharp
         m_MethodName: StartPlay
         m_Mode: 1
         m_Arguments:
@@ -963,21 +963,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9107264008074821941}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+      - m_Target: {fileID: 7947464342779306019}
+        m_TargetAssemblyTypeName: TitleMenuUI, Assembly-CSharp
         m_MethodName: ClearMemory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 9107264008074821941}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
-        m_MethodName: HideOrReveal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1265,8 +1253,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9107264008074821941}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+      - m_Target: {fileID: 7947464342779306019}
+        m_TargetAssemblyTypeName: TitleMenuUI, Assembly-CSharp
         m_MethodName: HideOrReveal
         m_Mode: 1
         m_Arguments:
@@ -1398,8 +1386,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9107264008074821941}
-        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+      - m_Target: {fileID: 7947464342779306019}
+        m_TargetAssemblyTypeName: TitleMenuUI, Assembly-CSharp
         m_MethodName: HideOrReveal
         m_Mode: 1
         m_Arguments:
@@ -2102,7 +2090,7 @@ GameObject:
   - component: {fileID: 6295075813995966520}
   - component: {fileID: 1479986206363268683}
   - component: {fileID: 3890380930670243439}
-  - component: {fileID: 9107264008074821941}
+  - component: {fileID: 7947464342779306019}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -2200,7 +2188,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9107264008074821941
+--- !u!114 &7947464342779306019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2209,9 +2197,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8649237993755733343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3161b17a1c8303d4eb4f92f81a64e29e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5008bc35a354d1642974b744f905a055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuUI
+  m_EditorClassIdentifier: Assembly-CSharp::TitleMenuUI
   TopScore: {fileID: 695385769971788922}
   playerName: {fileID: 1247023518606807708}
   hiddenObj: {fileID: 4397077655324934729}

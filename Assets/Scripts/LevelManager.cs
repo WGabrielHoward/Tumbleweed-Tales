@@ -46,7 +46,8 @@ public class LevelManager : MonoBehaviour
         state = PlayState.playing;
 
         levelCanvas = FindAnyObjectByType<LevelCanvas>();
-        
+
+        UpdateTotalScore();
         UpdateTopScore();
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         nextSceneIndex = buildIndex + 1;
@@ -59,37 +60,25 @@ public class LevelManager : MonoBehaviour
             case PlayState.gameOver:
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    SceneManager.LoadScene(buildIndex); // Restart this level
-                    Play();
+                    RestartLevel();
                 }
                 if (Input.GetKeyDown(KeyCode.M))
                 {
-                    SceneManager.LoadScene("TitleScreen"); // 0, should be TitleScreen
-                    Play();
+                    MainMenu();
                 }
                 break;
             case PlayState.victory:
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-                    {
-                        SceneManager.LoadScene(nextSceneIndex); // Next Level
-                    }
-                    else
-                    {
-                        SceneManager.LoadScene(0);  // 0, should be TitleScreen
-                    }
-                    Play();
+                    NextLevel();
                 }
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    SceneManager.LoadScene(buildIndex); // Restart this level
-                    Play();
+                    RestartLevel();
                 }
                 if (Input.GetKeyDown(KeyCode.M))
                 {
-                    SceneManager.LoadScene("TitleScreen"); // 0, should be TitleScreen
-                    Play();
+                    MainMenu();
                 }
                 break;
             case PlayState.playing:
@@ -105,6 +94,32 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("TitleScreen"); // 0, should be TitleScreen
+        Play();
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(buildIndex); // Restart this level
+        Play();
+    }
+
+    public void NextLevel()
+    {
+        AddLevelToTotal();
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex); // Next Level
+        }
+        else
+        {
+            SceneManager.LoadScene(0);  // 0, should be TitleScreen
+        }
+        Play();
+    }
+
     private void SetState(PlayState newState)
     {
         state = newState;
@@ -113,14 +128,35 @@ public class LevelManager : MonoBehaviour
     public void AddPoints(int points)
     {
         m_Points += points;
-        levelCanvas.ScoreUpdate();
-        PersistentData.Instance.ScoreUpdate(m_Points);
+        UpdateLevelScore();
+    }
+
+    public void AddLevelToTotal()
+    {
+        pData.AddToTotalScore(m_Points);
         UpdateTopScore();
     }
     
     public int GetScore()
     {
         return m_Points;
+    }
+
+    public int GetTotalScore()
+    {
+        // returns sum of total score and current level score
+        return pData.GetTotalScore() + m_Points;
+    }
+
+    public void UpdateLevelScore()
+    {
+        levelCanvas.ScoreUpdate();
+        UpdateTotalScore();
+    }
+
+    public void UpdateTotalScore()
+    {
+        levelCanvas.TotalScoreUpdate();
     }
 
     public void UpdateTopScore()
