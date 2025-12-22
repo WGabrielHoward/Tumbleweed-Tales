@@ -26,7 +26,7 @@ A fast-paced 3D rolling survival game built in Unity where you control a tumblew
 - WebGL build hosted on Unity Play
 
 ### Tech Stack
-- Unity (2022.3 LTS)
+- Unity 6 (6000.2.8f1)
 - C#
 - Physics-driven gameplay
 - Data persistence
