@@ -5,7 +5,7 @@ A fast-paced 3D rolling survival game built in Unity where you control a tumblew
 **Play it now in your browser:**  
 [Play Tumbleweed Tales on Unity Play](https://play.unity.com/en/games/3d1ab859-707c-44e6-90b9-8dddc777cf41/tumbleweed-tales)
 
-<!-- Replace with your actual GIF -->
+<!-- Replace with gameplay GIF -->
 ![Gameplay GIF](assets/gameplay.gif)
 
 ### Gameplay & Controls
@@ -34,7 +34,7 @@ A fast-paced 3D rolling survival game built in Unity where you control a tumblew
 
 ### How to Run Locally
 1. Clone: `git clone https://github.com/WGabrielHoward/Tumbleweed-Tales.git`
-2. Open in Unity Hub (2022.3 or compatible)
+2. Open in Unity Hub (6000.2.8 or compatible)
 3. Load the main scene and press Play!
 
 ### Screenshots
