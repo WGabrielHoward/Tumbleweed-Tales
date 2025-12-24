@@ -3,7 +3,7 @@
 A 3D rolling survival game built in Unity where you control a plant sphere, dodging enemies, collecting gems, and racing to reach the next level.
 
 **Play it now in your browser:**  
-[Play Tumbleweed Tales on Unity Play](https://play.unity.com/en/games/3d1ab859-707c-44e6-90b9-8dddc777cf41/tumbleweed-tales)
+[Play Bioball on Unity Play](https://play.unity.com/en/games/3d1ab859-707c-44e6-90b9-8dddc777cf41/tumbleweed-tales)
 
 <!-- Replace with gameplay GIF -->
 ![Gameplay GIF](assets/gameplay.gif)
