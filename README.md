@@ -1,6 +1,6 @@
-# Tumbleweed Tales 🌵
+# Bioball
 
-A fast-paced 3D rolling survival game built in Unity where you control a tumbleweed sphere, dodging enemies, collecting gems, and racing to reach the next level.
+A 3D rolling survival game built in Unity where you control a plant sphere, dodging enemies, collecting gems, and racing to reach the next level.
 
 **Play it now in your browser:**  
 [Play Tumbleweed Tales on Unity Play](https://play.unity.com/en/games/3d1ab859-707c-44e6-90b9-8dddc777cf41/tumbleweed-tales)
@@ -9,12 +9,12 @@ A fast-paced 3D rolling survival game built in Unity where you control a tumblew
 ![Gameplay GIF](assets/gameplay.gif)
 
 ### Gameplay & Controls
-- **Objective**: Roll as far as you can, collect gems for points, avoid enemies, and reach the goal to advance levels.
+- **Objective**: Roll towards the goal, collect gems for points, avoid enemies, and reach the goal to advance levels.
 - **Movement**:
   - **W / Up Arrow** — Roll forward (add force)
   - **S / Down Arrow** — Roll backward
   - **A / D** or **Left / Right Arrows** — Rotate camera / steer
-- Enemies patrol and chase—survive by outrolling them!
+- Enemies chase—survive by outrolling them!
 - High score persists between sessions.
 
 ### Features
