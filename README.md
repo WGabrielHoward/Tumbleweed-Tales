@@ -43,7 +43,7 @@ A 3D rolling survival game built in Unity where you control a plant sphere, dodg
 ![Screenshot 3](assets/screenshot3.png)
 
 ### License
-MIT License
+This repository is licensed under the **GNU GPL-3.0 License**, with the following exception:
+- **Lore and Backstory Files**: All files located in the `lore/` directory are copyrighted and are not covered under the GNU GPL-3.0 License. Redistribution, modification, or use of these files is prohibited without explicit written permission. For details, see `lore/COPYRIGHT.md`.
 
 Built by [William G. Howard](https://www.linkedin.com/in/william-g-howard) while studying Game Programming at DePaul University.
-
