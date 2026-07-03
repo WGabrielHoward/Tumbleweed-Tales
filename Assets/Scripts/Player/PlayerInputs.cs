@@ -1,10 +1,12 @@
 ﻿using Scripts.Systems;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Scripts.Player
 {
     public class PlayerInputs: MonoBehaviour
     {
+        private PlayerInput input;
         public void Update()
         {
             float move = Input.GetAxis("Vertical");

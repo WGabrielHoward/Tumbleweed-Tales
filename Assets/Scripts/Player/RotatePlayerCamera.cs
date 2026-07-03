@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Scripts.Player
 {
@@ -9,7 +10,7 @@ namespace Scripts.Player
         [SerializeField] private float rotationSpeed=200;
         private GameObject focalPoint;
 
-
+        
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

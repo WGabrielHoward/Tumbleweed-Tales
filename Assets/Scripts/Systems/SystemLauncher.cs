@@ -28,8 +28,9 @@ public class SystemLauncher : MonoBehaviour
 
     private void LaunchBehaviorSystem()
     {
+
         // Find all NPCs and register their data
-        foreach (var npc in FindObjectsByType<NonPlayerCharacter>(FindObjectsSortMode.None))
+        foreach (var npc in FindObjectsByType<NonPlayerCharacter>())
         {
             npcDataList.Add(npc.npcData);
         }
