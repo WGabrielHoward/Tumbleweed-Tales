@@ -1,28 +1,59 @@
 
 using Scripts.Systems;
+using System;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+[DefaultExecutionOrder(-100)]
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager Instance { get; private set; }
+
     public static PersistentData pData;
 
     private int buildIndex;
     private int nextSceneIndex;
     private int titleScreenIndex;
-       
+
+    public int firstLevel { get; private set; }
+    public int currentLevel { get; private set; }
+
+    public event Action OnLevelChange;
+
+
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        pData = PersistentData.Instance;
-
-        ScoreSystem.Instance.ResetLevelScore();
-        GameStateSystem.Instance.TriggerPlay();
 
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         nextSceneIndex = buildIndex + 1;
         titleScreenIndex = 0; // SceneManager.GetSceneByName("TitleScreen").buildIndex;   // should be 0 aka main menu
+        firstLevel = 1;
+        pData = PersistentData.Instance;
+
+        ScoreSystem.Instance.ResetLevelScore();
+
+
+        if (GameStateSystem.Instance != null)
+        {
+            GameStateSystem.Instance.TriggerPlay();
+            GameStateSystem.Instance.OnStateChanged += OnGameStateChanged;
+        }
     }
 
     private void Update()
@@ -49,9 +80,13 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(int levelIndex)
     {
+        OnLevelChange?.Invoke();
         ScoreSystem.Instance.ResetLevelScore();
         SceneManager.LoadScene(levelIndex);     // 0 = main menu, buildIndex = this level, nextSceneIndex = next level
         GameStateSystem.Instance.TriggerPlay();
+        buildIndex = levelIndex;
+        currentLevel = levelIndex;
+        nextSceneIndex = levelIndex + 1;
     }
 
 
@@ -66,11 +101,13 @@ public class LevelManager : MonoBehaviour
         }
 
         LoadLevel(nextSceneIndex);
+
     }
 
   
     void OnGameStateChanged(GameState from, GameState to)
     {
+        Debug.Log($"OnGameStateChanged, from({from}) to({to})");
         switch (to)
         {
             case GameState.Playing:
@@ -78,6 +115,7 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case GameState.Pause:
+                Debug.Log("Paused");
                 Time.timeScale = 0f;
                 break;
 
@@ -100,9 +138,11 @@ public class LevelManager : MonoBehaviour
         {
             case GameState.Playing:
                 if (Input.GetKeyDown(KeyCode.P))
+                {
+                    Debug.Log("Pause Triggered");
                     GameStateSystem.Instance.TriggerPause();
-                break;
-
+                }
+                break;         
             case GameState.Pause:
                 HandlePauseInput();
                 break;

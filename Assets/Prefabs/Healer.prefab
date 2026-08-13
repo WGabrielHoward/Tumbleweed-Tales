@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 5257056113352207598}
   - component: {fileID: 1888021200970485279}
   - component: {fileID: -629490241945460661}
-  - component: {fileID: 2185911605823215724}
   - component: {fileID: 8050653985097875078}
+  - component: {fileID: 8794882456891280118}
+  - component: {fileID: 3244721419563995458}
   m_Layer: 0
   m_Name: Healer
   m_TagString: NPC
@@ -92,6 +93,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!54 &1888021200970485279
 Rigidbody:
@@ -141,22 +143,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2185911605823215724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854097267668045109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12845b3222d54d34ea5f0ab6864dd958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageOnContact
-  element: 2
-  damagePerTick: -1
-  tickRate: 1
-  lingerDuration: 0
 --- !u!114 &8050653985097875078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,9 +155,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71fe61dec88502544bbc9547c0d5aa0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scripts.NPC.NonPlayerCharacter
-  forceToTarget: 1
-  health: 10
-  aggroRange: 50
   npcType: 1
-  element: 2
+  speed: 1
+  health: 10
+  aggroRange: 10
+  damageAmount: -2
+  element: 0
   target: {fileID: 0}
+--- !u!114 &8794882456891280118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854097267668045109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72d99fcbe82c4c46a7062d8a27b8aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Entities_Sets.EntityBridge
+--- !u!114 &3244721419563995458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854097267668045109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8543fc9ea8e51e04c83f9ee019ee09af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.UnityBridges.CollisionBridge

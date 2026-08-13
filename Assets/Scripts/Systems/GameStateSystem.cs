@@ -12,6 +12,7 @@ namespace Scripts.Systems
         Defeat
     }
 
+
     public class GameStateSystem : MonoBehaviour
     {
         public static GameStateSystem Instance { get; private set; }
@@ -38,11 +39,13 @@ namespace Scripts.Systems
             {
                 return;
             }
+            Debug.Log($"NewState {newState}");
 
             var previous = CurrentState;
             CurrentState = newState;
-
+                       
             OnStateChanged?.Invoke(previous, newState);
+
         }
 
         public void TriggerPlay() => SetState(GameState.Playing);

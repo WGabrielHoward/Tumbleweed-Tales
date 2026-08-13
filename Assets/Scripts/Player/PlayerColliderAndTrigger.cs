@@ -1,9 +1,13 @@
-using Scripts.Interface;
+
 using Scripts.Systems;
+using Scripts.UnityBridges;
 using UnityEngine;
+using Scripts.Components;
 
 namespace Scripts.Player
 {
+    // Definitely needs refactored
+
     [RequireComponent(typeof(PlayerEffects))]
     public class PlayerColliderAndTrigger : MonoBehaviour
     {
@@ -36,9 +40,10 @@ namespace Scripts.Player
 
         private void HandleEnter(GameObject obj)
         {
-            if (obj.TryGetComponent<IDamageSource>(out var source))
+            if (obj.TryGetComponent<EntityBridge>(out var bridge))
             {
-                var effect = ElementRules.GetStatusForElement(source.Element);
+                Element element = ElementSystem.Instance.GetElement(bridge.EntityId);
+                var effect = ElementRules.GetStatusForElement(element);
                 playerEffects.EffectsSwitch(effect, true);
             }
 
@@ -50,9 +55,10 @@ namespace Scripts.Player
 
         private void HandleExit(GameObject obj)
         {
-            if (obj.TryGetComponent<IDamageSource>(out var source))
+            if (obj.TryGetComponent<EntityBridge>(out var bridge))
             {
-                var effect = ElementRules.GetStatusForElement(source.Element);
+                Element element = ElementSystem.Instance.GetElement(bridge.EntityId);
+                var effect = ElementRules.GetStatusForElement(element);
                 playerEffects.EffectsSwitch(effect, false);
             }
         }

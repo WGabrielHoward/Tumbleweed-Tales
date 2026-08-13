@@ -27,8 +27,6 @@ public class LevelCanvas : MonoBehaviour
     //Start is called before the first frame update
     void Start()
     {
-        //pMan = FindAnyObjectByType<LevelManager>();
-        //pData = PersistentData.Instance;
         
         PlayingSetup();
         TopScoreUpdate(pData.GetTopName(), pData.GetTopPoints());

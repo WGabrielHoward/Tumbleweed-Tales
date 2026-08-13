@@ -2,56 +2,41 @@
 using UnityEngine;
 
 using Scripts.Systems;
-using Scripts.Interface;
+using Scripts.Components;
+using NUnit.Framework;
+using Scripts.UnityBridges;
 
 namespace Scripts.Player
 {
-    public class PlayerStats : MonoBehaviour, IDamageable
+    public class PlayerStats : MonoBehaviour
     {
-        protected Element element;
-        public Element Element => element;
-        public int EntityId => entityId;
-
-        [SerializeField] private int maxHealth = 100;
         private int entityId;
         private int health;
+        private LevelCanvas levelCanvas;
 
-        private void Awake()
+        private void Start()
         {
-            health = maxHealth;
-            entityId = gameObject.GetComponent<PlayerEntity>().EntityId;
-
-            HealthSystem.Instance.Register(EntityId, maxHealth);
-            DamageRouter.Instance?.Register(EntityId, HealthSystem.Instance.ApplyDamage);
-
-            UpdateUI();
-        }
-        private void OnEnable()
-        {
-            if (HealthSystem.Instance != null)
-            {
-                HealthSystem.Instance.OnHealthChanged += HealthChanged;
-                HealthSystem.Instance.OnEntityDied += EntityDied;
-            }
+            entityId = gameObject.GetComponent<EntityBridge>().EntityId;
+            health = HealthSystem.Instance.GetMaxHealth(entityId);
+            levelCanvas = FindAnyObjectByType<LevelCanvas>();
+            Assert.IsNotNull(levelCanvas);
+            UpdateUI(health);
         }
 
-        private void OnDisable()
+        void Awake()
         {
-            if (HealthSystem.Instance != null)
-            {
-                HealthSystem.Instance.OnHealthChanged -= HealthChanged;
-                HealthSystem.Instance.OnEntityDied -= EntityDied;
-            }
+            HealthSystem.Instance.OnHealthChanged += HealthChanged;
+            DeathSystem.Instance.OnEntityDied += EntityDied;
         }
+
 
         public void HealthChanged(int nEntityId, int currentHealth)
         {
             if (nEntityId == entityId)
             {
-                health = currentHealth;
-                UpdateUI();
+                UpdateUI(currentHealth);
             }
-            
+
         }
 
         public void EntityDied(int deadEntityId)
@@ -62,9 +47,9 @@ namespace Scripts.Player
             }
         }
 
-        private void UpdateUI()
+        private void UpdateUI(int health)
         {
-            FindAnyObjectByType<LevelCanvas>()?.HealthUpdate(health);
+            levelCanvas.HealthUpdate(health);
         }
 
     }

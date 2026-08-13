@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Scripts.Player
 {
     public class RotatePlayerCamera : MonoBehaviour
     {
 
-        private float horizontalInput;
         [SerializeField] private float rotationSpeed=200;
         private GameObject focalPoint;
 
@@ -20,13 +18,14 @@ namespace Scripts.Player
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Rotate(float amount)
         {
             transform.position = focalPoint.transform.position;
-
-            horizontalInput = Input.GetAxis("Horizontal");
-            transform.Rotate(Vector3.up, horizontalInput * rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, amount * rotationSpeed * Time.deltaTime);
+        }
+        public Vector3 GetForward()
+        {
+            return transform.forward;
         }
     }
 }

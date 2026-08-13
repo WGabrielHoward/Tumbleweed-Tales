@@ -1,6 +1,6 @@
 ﻿
-using Scripts.Interface;
 using UnityEngine;
+using Scripts.Components;
 
 public class ActiveDamageEffect
 {

@@ -1,4 +1,6 @@
-﻿using Scripts.Data;
+﻿using Scripts.Components;
+using Scripts.Data;
+using Scripts.Entities_Sets;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,14 +11,8 @@ namespace Scripts.Systems
     {
         public static BehaviorSystem Instance { get; private set; }
 
-        private class BehaviorEntry
-        {
-            public int EntityId;
-            public NPCData Data;
-        }
+        private SparseSet<BehaviorComponent> sparseBehavior = new SparseSet<BehaviorComponent>();
 
-        private readonly List<BehaviorEntry> entries = new();
-        private readonly Dictionary<int, int> indexByEntity = new();
 
 
         [SerializeField] private float behaviorTickRate = 0.2f; // 5 Hz
@@ -33,35 +29,24 @@ namespace Scripts.Systems
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.OnLevelChange += ClearSystem;
+            }
+
         }
 
-        public void Register(int entityId, NPCData data)
+        public void Register(int entityId, BehaviorComponent behavior)
         {
-            if (indexByEntity.ContainsKey(entityId))
-                return;
-
-            indexByEntity[entityId] = entries.Count;
-            entries.Add(new BehaviorEntry
-            {
-                EntityId = entityId,
-                Data = data
-            });
+            sparseBehavior.Add(entityId, behavior);
         }
 
 
         public void Unregister(int entityId)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index))
-                return;
-
-            int last = entries.Count - 1;
-            entries[index] = entries[last];
-            indexByEntity[entries[index].EntityId] = index;
-
-            entries.RemoveAt(last);
-            indexByEntity.Remove(entityId);
+            sparseBehavior.Remove(entityId);
         }
-        
+
 
         void Update()
         {
@@ -72,48 +57,115 @@ namespace Scripts.Systems
             behaviorTimer = behaviorTickRate;
             RunBehavior();
 
-            
+
         }
 
         private void RunBehavior()
         {
-            for (int i = 0; i < entries.Count; i++)
-            {
-                ref NPCData npc = ref entries[i].Data;
+            var healthSystem = HealthSystem.Instance;
+            var movementSystem = MovementSystem.Instance;
 
-                Vector3 toTarget = npc.TargetPosition - npc.Position;
-                                
+            for (int i = 0; i < sparseBehavior.Count; i++)
+            {
+                BehaviorComponent behavior = sparseBehavior.GetComponentByIndex(i);
+                int entityId = sparseBehavior.GetEntityByIndex(i);
+                
+                Vector3 toTarget = behavior.target.position - behavior.self.position;
+
                 // Decide intent
-                if (toTarget.sqrMagnitude < npc.AggroRange * npc.AggroRange)
+                if (toTarget.sqrMagnitude < behavior.perceptionRange * behavior.perceptionRange)
                 {
-                    npc.Intent = NPCIntent.Flee;
+                    behavior.intent = NPCIntent.Flee;
                     // asking npc for health... is this the right call? (because right now healthSystem is trying to update npcHealth)
-                    if (npc.NPCType == NPCType.Enemy && npc.Health > 2)
+                    if (behavior.type == NPCType.Enemy && healthSystem.GetCurrentHealth(entityId) > 2)
                     {
-                        npc.Intent = NPCIntent.Chase;
+                        behavior.intent = NPCIntent.Chase;
                     }
-                     
+
                 }
                 else
                 {
-                    npc.Intent = NPCIntent.Idle;
+                    behavior.intent = NPCIntent.Idle;
                 }
-
+                sparseBehavior.SetComponentByEntity(entityId, behavior);
 
                 // Compute desired direction
-                if (npc.Intent == NPCIntent.Flee)
+                Vector3 direction = Vector3.zero;
+                int input = 0;
+
+                switch (behavior.intent)
                 {
-                    npc.DesiredDirection = -toTarget.normalized;
+                    case NPCIntent.Flee:
+                        direction = -toTarget.normalized;
+                        input = 1;
+                        break;
+
+                    case NPCIntent.Chase:
+                        direction = toTarget.normalized;
+                        input = 1;
+                        break;
                 }
-                else if (npc.Intent == NPCIntent.Chase)
-                {
-                    npc.DesiredDirection = toTarget.normalized;
-                }
-                else
-                {
-                    npc.DesiredDirection = Vector3.zero;
-                }
+
+                movementSystem.SetMoveIntentByEntity(entityId, direction, input);
+
             }
+
+
+        }
+
+        public BehaviorComponent GetBehaviorByEntity(int entityId)
+        {
+            if (sparseBehavior.TryGet(entityId, out BehaviorComponent behavior))
+            {
+                return behavior;
+            }
+            return default;
+        }
+
+        public void SetBehaviorByEntity(int entityId, BehaviorComponent newBehavior)
+        {
+            if (sparseBehavior.TryGet(entityId, out BehaviorComponent behavior))
+            {
+                sparseBehavior.SetComponentByEntity(entityId, newBehavior);
+            }
+        }
+
+        public void SetIntentByEntity(int entityId, NPCIntent newIntent)
+        {
+            if (sparseBehavior.TryGet(entityId, out BehaviorComponent behavior))
+            {
+                behavior.intent = newIntent;
+                sparseBehavior.SetComponentByEntity(entityId, behavior);
+            }
+
+        }
+
+        public void SetTargetByEntity(int entityId, Transform newTarget)
+        {
+            if (sparseBehavior.TryGet(entityId, out BehaviorComponent behavior))
+            {
+                behavior.target = newTarget;
+                sparseBehavior.SetComponentByEntity(entityId, behavior);
+            }
+        }
+
+        public void SetPerceptionRangeByEntity(int entityId, float newPerceptionRange)
+        {
+            if (sparseBehavior.TryGet(entityId, out BehaviorComponent behavior))
+            {
+                behavior.perceptionRange = newPerceptionRange;
+                sparseBehavior.SetComponentByEntity(entityId, behavior);
+            }
+
+        }
+
+        private void ClearSystem()
+        {
+            Debug.Log($"ClearBehaviorSystem - Before: {sparseBehavior.Count}");
+
+            sparseBehavior.Clear();
+
+            Debug.Log($"ClearBehaviorSystem - After: {sparseBehavior.Count}");
         }
 
     }

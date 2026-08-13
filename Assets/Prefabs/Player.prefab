@@ -16,8 +16,10 @@ GameObject:
   - component: {fileID: 4283418330860019253}
   - component: {fileID: 9035089090296986398}
   - component: {fileID: 1532723183138995052}
-  - component: {fileID: 5819094333377183798}
   - component: {fileID: 1441280670463410481}
+  - component: {fileID: 5406171903215351686}
+  - component: {fileID: 3318136013820831516}
+  - component: {fileID: 2538312378375770797}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -100,6 +102,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &8905805472891463884
 SphereCollider:
@@ -161,6 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fd1ff168c630449af74149bdeb41db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerEntity
+  playerSpeed: 5
+  maxHealth: 100
+  damageAmount: 5
+  element: 0
 --- !u!114 &9035089090296986398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,19 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28641f413b07d7488ebe74f71cde04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerColliderAndTrigger
---- !u!114 &5819094333377183798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704697433308227483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef38008965b2ff74d879510d601f16be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerStats
-  maxHealth: 100
 --- !u!114 &1441280670463410481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +208,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4698d812d719341b93c7708c327525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerInputs
+  playerID: 0
+--- !u!114 &5406171903215351686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704697433308227483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72d99fcbe82c4c46a7062d8a27b8aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Entities_Sets.EntityBridge
+--- !u!114 &3318136013820831516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704697433308227483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8543fc9ea8e51e04c83f9ee019ee09af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.UnityBridges.CollisionBridge
+--- !u!114 &2538312378375770797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704697433308227483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef38008965b2ff74d879510d601f16be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Player.PlayerStats
 --- !u!1001 &3519924778876387097
 PrefabInstance:
   m_ObjectHideFlags: 0

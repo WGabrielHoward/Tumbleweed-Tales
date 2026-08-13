@@ -1,5 +1,5 @@
-﻿using Scripts.Data;
-using System.Collections.Generic;
+﻿using Scripts.Components;
+using Scripts.Entities_Sets;
 using UnityEngine;
 
 namespace Scripts.Systems
@@ -7,19 +7,10 @@ namespace Scripts.Systems
     
     public class MovementSystem : MonoBehaviour
     {
-        private class MovementEntry
-        {
-            public int EntityId;
-            public bool isPlayer;
-            public NPCData NPC;
-            public Rigidbody Body;
-        }
-
-        private readonly List<MovementEntry> entries = new();
-        private readonly Dictionary<int, int> indexByEntity = new();
-
+        
         public static MovementSystem Instance { get; private set; }
 
+        private SparseSet<MovementComponent> sparseMovement = new SparseSet<MovementComponent>();
 
 
         private void Awake()
@@ -32,99 +23,92 @@ namespace Scripts.Systems
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            if (LevelManager.Instance != null)
+            {
+                Debug.Log("Subscribe to ClearMovementSystem");
+                LevelManager.Instance.OnLevelChange += ClearSystem;
+            }
         }
 
         private void FixedUpdate()
         {
 
-            //for (int i = 0; i < entries.Count; i++)
-            //{
-            //    var entry = entries[i];
-            //    var npc = entry.Data;
-
-            //    if (npc.Intent == NPCIntent.Idle)
-            //        continue;
-
-            //    if (entry.Body == null)
-            //        continue;
-            //    entry.Body.AddForce(npc.DesiredDirection * npc.MoveForce);
-            //}
-            for (int i = 0; i < entries.Count; i++)
+            for (int i = 0; i < sparseMovement.Count; i++)
             {
-                var entry = entries[i];
-
-                if (entry.Body == null)
-                    continue;
-                // ───────── Player movement ─────────
-                if (entry.isPlayer)
+                MovementComponent tmpComp = sparseMovement.GetComponentByIndex(i);
+                if (tmpComp.rigidbody != null)
                 {
-                    var player = PlayerRegistry.GetByEntityId(entry.EntityId);
-
-                    if (Mathf.Abs(player.MoveIntent) < 0.01f)
-                        continue;
-
-                    Vector3 forward = player.FocalPoint.forward;
-                    forward.y = 0f;
-                    forward.Normalize();
-
-                    entry.Body.AddForce(forward * player.MoveIntent * 5f);
-                }
-                // ───────── NPC movement ─────────
-                else
-                {
-                    var npc = entry.NPC;
-
-                    if (npc.Intent == NPCIntent.Idle)
-                        continue;
-
-                    entry.Body.AddForce( npc.DesiredDirection * npc.MoveForce);
-                }
-                
-                
+                    tmpComp.rigidbody.AddForce(tmpComp.moveDirection * tmpComp.moveInput * tmpComp.moveSpeed);
+                }             
             }
 
         }
 
-        public void Register(int entityId, NPCData data, Rigidbody body)
+        public void Register(int entityId, MovementComponent component)
         {
-            if (indexByEntity.ContainsKey(entityId))
-                return;
+            sparseMovement.Add(entityId, component);
 
-            indexByEntity[entityId] = entries.Count;
-            entries.Add(new MovementEntry
-            {
-                EntityId = entityId,
-                NPC = data,
-                Body = body
-            });
-        }
-        public void RegisterPlayer(PlayerData data)
-        {
-            if (indexByEntity.ContainsKey(data.EntityId))
-                return;
-
-            indexByEntity[data.EntityId] = entries.Count;
-
-            entries.Add(new MovementEntry
-            {
-                EntityId = data.EntityId,
-                isPlayer = true,
-                Body = data.Rigidbody
-            });
         }
 
         public void Unregister(int entityId)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index))
-                return;
+            sparseMovement.Remove(entityId);
+        }
 
-            int last = entries.Count - 1;
+        public void SetMovementByEntity(int entityId, Vector3 newDirection, int newInput, float newSpeed)
+        {
+            if (sparseMovement.TryGet(entityId, out MovementComponent component))
+            {
+                component.moveSpeed = newSpeed;
+                component.moveDirection = newDirection;
+                component.moveInput = newInput;
+                sparseMovement.SetComponentByEntity(entityId, component);
+            }
+        }
 
-            entries[index] = entries[last];
-            indexByEntity[entries[index].EntityId] = index;
+        public void SetMoveDirectionByEntity(int entityId, Vector3 newDirection)
+        {
+            if (sparseMovement.TryGet(entityId, out MovementComponent component))
+            {
+                component.moveDirection = newDirection;
+                sparseMovement.SetComponentByEntity(entityId, component);
+            }
+        }
 
-            entries.RemoveAt(last);
-            indexByEntity.Remove(entityId);
+        public void SetMoveSpeedByEntity(int entityId, float newSpeed)
+        {
+            if (sparseMovement.TryGet(entityId, out MovementComponent component))
+            {
+                component.moveSpeed = newSpeed;
+                sparseMovement.SetComponentByEntity(entityId, component);
+            }
+        }
+
+        public void SetMoveInputByEntity(int entityId, int newInput)
+        {
+            if (sparseMovement.TryGet(entityId, out MovementComponent component))
+            {
+                component.moveInput = newInput;
+                sparseMovement.SetComponentByEntity(entityId, component);
+            }
+        }
+
+        public void SetMoveIntentByEntity(int entityId, Vector3 newDirection, int newInput)
+        {
+            if (sparseMovement.TryGet(entityId, out MovementComponent component))
+            {
+                component.moveDirection = newDirection;
+                component.moveInput = newInput;
+                sparseMovement.SetComponentByEntity(entityId, component);
+            }
+        }
+
+        // -------------------------- Clear ---------------------
+        public void ClearSystem()
+        {
+            Debug.Log("ClearMovementSystem");
+            sparseMovement.Clear();
         }
 
     }

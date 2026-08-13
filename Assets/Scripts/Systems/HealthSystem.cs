@@ -1,4 +1,5 @@
-﻿using Scripts.Data;
+﻿using Scripts.Components;
+using Scripts.Entities_Sets;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +10,10 @@ namespace Scripts.Systems
     {
         public static HealthSystem Instance { get; private set; }
 
-        private readonly List<HealthComponent> entries = new();
-        private readonly Dictionary<int, int> indexByEntity = new();
+        private SparseSet<HealthComponent> sparseHealth = new SparseSet<HealthComponent>();
 
         // Pure signals — no gameplay logic
-        public event Action<int, int> OnHealthChanged;
-        public event Action<int> OnEntityDied;
+        public event Action<int, int> OnHealthChanged; // entityId, newHealth
 
         private void Awake()
         {
@@ -26,90 +25,103 @@ namespace Scripts.Systems
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.OnLevelChange += ClearSystem;
+            }
         }
 
         // ---------------------- Registration ----------------------
 
-        public void Register(int entityId, int maxHealth)
+        public void Register(int entityId, HealthComponent health)
         {
-            if (indexByEntity.ContainsKey(entityId)) return;
-
-            var health = new HealthComponent
-            {
-                EntityId = entityId,
-                Current = maxHealth,
-                Max = maxHealth
-            };
-
-            indexByEntity[entityId] = entries.Count;
-            entries.Add(health);
+            sparseHealth.Add(entityId, health);
         }
 
         public void Unregister(int entityId)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index)) return;
-
-            int lastIndex = entries.Count - 1;
-
-            entries[index] = entries[lastIndex];
-            indexByEntity[entries[index].EntityId] = index;
-
-            entries.RemoveAt(lastIndex);
-            indexByEntity.Remove(entityId);
+            sparseHealth.Remove(entityId);
         }
 
         // ---------------------- Damage ----------------------
 
         public void ApplyDamage(int entityId, int amount)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index)) return;
-
-            var health = entries[index];
-
-            health.Current -= amount;
+            Debug.Log($"{amount} Damage applied to entity {entityId}");
+            HealthComponent health;
+            if (!sparseHealth.TryGet(entityId, out health)) return;
+            
+            health.currentHealth -= amount;
 
             // in case of healing via negative damage
-            if (health.Current > health.Max)
-                health.Current = health.Max;
+            if (health.currentHealth > health.maxHealth)
+                health.currentHealth = health.maxHealth;
+
+            sparseHealth.SetComponentByEntity(entityId, health);
+            OnHealthChanged?.Invoke(entityId, health.currentHealth);
 
 
-            entries[index] = health;
+            if (health.currentHealth <= 0 && !DeathSystem.Instance.IsEntityDead(entityId))
+            {
+                Debug.Log("Entity " + entityId + " has died.");
+                AttachDeath(entityId);
+                return;
+            }
 
-            OnHealthChanged?.Invoke(entityId, health.Current);
 
-            if (health.Current <= 0)
-                OnEntityDied?.Invoke(entityId);
         }
 
         public void Heal(int entityId, int amount)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index)) return;
+            HealthComponent health;
+            if (!sparseHealth.TryGet(entityId, out health)) return;
 
-            var health = entries[index];
+            
 
-            health.Current += amount;
+            health.currentHealth += amount;
 
-            if (health.Current > health.Max)
-                health.Current = health.Max;
+            if (health.currentHealth > health.maxHealth)
+                health.currentHealth = health.maxHealth;
 
-            entries[index] = health;
+            sparseHealth.SetComponentByEntity(entityId, health);
 
-            OnHealthChanged?.Invoke(entityId, health.Current);
+        }
+
+        // ---------------------- Death Handling ----------------------
+        
+        private void AttachDeath(int entityId)
+        {
+            DeathComponent death = new DeathComponent() 
+            {
+                DeathDelay = 2f     // I need to set the delay by entity type or additional logic
+            };
+            DeathSystem.Instance.Register(entityId, death);
         }
 
         // ---------------------- Queries ----------------------
 
         public int GetCurrentHealth(int entityId)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index)) return 0;
-            return entries[index].Current;
+            HealthComponent health;
+            if (!sparseHealth.TryGet(entityId, out health)) return 0;
+            return health.currentHealth;
         }
 
         public int GetMaxHealth(int entityId)
         {
-            if (!indexByEntity.TryGetValue(entityId, out int index)) return 0;
-            return entries[index].Max;
+            HealthComponent health;
+            if (!sparseHealth.TryGet(entityId, out health)) return 0;
+            return health.maxHealth;
         }
+        
+        // --------------------- Clear ------------------------------
+        
+        public void ClearSystem()
+        {
+            sparseHealth.Clear();
+        }
+
     }
 }
 

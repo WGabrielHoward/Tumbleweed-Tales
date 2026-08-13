@@ -1,92 +1,59 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
-using Scripts.Interface;
-using Scripts.Systems;
+using Scripts.Components;
 
 using Scripts.Data;
+using Scripts.Entities_Sets;
 
 namespace Scripts.Systems
 {
     public class DamageSystem : MonoBehaviour
     {
-        private readonly List<ActiveDamageEffect> activeEffects = new();
 
-        private void FixedUpdate()
+        public static SparseSet<DamageComponent> sparseDamage = new SparseSet<DamageComponent>();
+
+        public static DamageSystem Instance;
+
+        private void Awake()
         {
-            float dt = Time.deltaTime;
-
-            for (int i = activeEffects.Count - 1; i >= 0; i--)
+            if (Instance != null)
             {
-                var effect = activeEffects[i];
+                Destroy(gameObject);
+                return;
+            }
 
-                if (effect.IsInstant)
-                {
-                    DamageRouter.Instance.ApplyDamage(effect.EntityId, effect.DamagePerTick);
-                    activeEffects.RemoveAt(i);
-                    continue;
-                }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
 
-                effect.TimeUntilNextTick -= dt;
-                if (effect.TimeUntilNextTick <= 0f)
-                {
-                    DamageRouter.Instance.ApplyDamage(effect.EntityId, effect.DamagePerTick);
-                    effect.TimeUntilNextTick = effect.TickRate;
-                }
-
-
-                // Linger / expiration
-                if (!effect.IsColliding)
-                {
-                    effect.LingerTimeRemaining -= dt;
-                    if (effect.LingerTimeRemaining <= 0f)
-                    {
-                        activeEffects.RemoveAt(i);
-                        continue;
-                    }
-                }
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.OnLevelChange += ClearSystem;
             }
         }
 
-        // Unified method: DOT or instant
-        public void ApplyDamage(
-            int entityId,
-            Element targetElement,
-            int damageAmount,
-            float tickRate = 0f,
-            float lingerDuration = 0f
-        )
+        // ---------------------- Registration ----------------------
+
+        public void Register(int entityId, DamageComponent damage)
         {
-            activeEffects.Add(new ActiveDamageEffect
-            {
-                EntityId = entityId,
-                TargetElement = targetElement,
-                DamagePerTick = damageAmount,
-                TickRate = tickRate,
-                TimeUntilNextTick = tickRate, // tickRate=0 → applies instantly in FixedUpdate
-                IsColliding = true,
-                LingerTimeRemaining = lingerDuration
-            });
+            sparseDamage.Add(entityId, damage);
         }
 
-        // Trigger linger after exit
-        public void StartLinger(int entityId, float lingerDuration)
+        public void Unregister(int entityId)
         {
-            foreach (var effect in activeEffects)
-            {
-                if (effect.EntityId == entityId && effect.IsColliding)
-                {
-                    effect.IsColliding = false;
-                    if (effect.LingerTimeRemaining <= 0f)
-                        effect.LingerTimeRemaining = lingerDuration;
-                }
-            }
+            sparseDamage.Remove(entityId);
         }
 
-        // Remove all effects for an entity
-        public void RemoveAllEffectsForTarget(int entityId)
+
+        public int GetDamage(int entityId)
         {
-            activeEffects.RemoveAll(e => e.EntityId == entityId);
+            DamageComponent damage;
+            if (!sparseDamage.TryGet(entityId, out damage)) return 0;
+            return damage.DamageAmount;
+        }
+
+        public void ClearSystem()
+        {
+            sparseDamage.Clear();
         }
     }
 }
