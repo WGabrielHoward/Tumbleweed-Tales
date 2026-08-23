@@ -8,32 +8,20 @@ using Scripts.UnityBridges;
 
 namespace Scripts.Systems
 {
-    public class DeathSystem : MonoBehaviour
+    public class DeathSystem 
     {
 
         public static SparseSet<DeathComponent> sparseDeath = new SparseSet<DeathComponent>();
 
-        public static DeathSystem Instance;
-
         private List<int> entitiesToKill = new List<int>();
 
         public event Action<int> OnEntityDied; // entityId
+        private Launcher launcher;
 
-        private void Awake()
+        public DeathSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            launcher = Launcher.Instance;
+            launcher.LevelManager.OnLevelChange += ClearSystem; 
         }
 
         // ---------------------- Registration ----------------------
@@ -97,20 +85,20 @@ namespace Scripts.Systems
         {
             Debug.Log("Killing entity: " + entityId);
 
-            MovementSystem.Instance?.Unregister(entityId);
-            BehaviorSystem.Instance?.Unregister(entityId);
-            DamageSystem.Instance?.Unregister(entityId);
-            ElementSystem.Instance?.Unregister(entityId);
-            HealthSystem.Instance?.Unregister(entityId);
+            Launcher.Instance.MovementSystem.Unregister(entityId);
+            Launcher.Instance.BehaviorSystem.Unregister(entityId);
+            Launcher.Instance.DamageSystem.Unregister(entityId);
+            Launcher.Instance.ElementSystem.Unregister(entityId);
+            Launcher.Instance.HealthSystem.Unregister(entityId);
 
             Unregister(entityId);
 
-            EntityBridge bridge = EntityRegistry.Instance?.GetByEntityId(entityId);
-            EntityRegistry.Instance.Unegister(entityId);
+            EntityBridge bridge = Launcher.Instance.EntityRegistry.GetByEntityId(entityId);
+            Launcher.Instance.EntityRegistry.Unegister(entityId);
             if(bridge != null)
             {
                 bridge.gameObject.SetActive(false);
-                Destroy(bridge.gameObject);
+                //Destroy(bridge.gameObject);
             }
             Debug.Log("Killed entity: " + entityId);
         }

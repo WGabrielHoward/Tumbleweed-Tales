@@ -22,7 +22,7 @@ namespace Scripts.Player
             float rotate = Input.GetAxis("Horizontal");
             rotatePlayerCamera.Rotate(rotate);
 
-            MovementSystem.Instance.SetMoveIntentByEntity(playerID, rotatePlayerCamera.GetForward(), moveIntent);
+            Launcher.Instance.MovementSystem.SetMoveIntentByEntity(playerID, rotatePlayerCamera.GetForward(), moveIntent);
 
         }
 

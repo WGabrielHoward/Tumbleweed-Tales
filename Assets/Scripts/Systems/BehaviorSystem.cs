@@ -9,30 +9,17 @@ namespace Scripts.Systems
 
     public class BehaviorSystem : MonoBehaviour
     {
-        public static BehaviorSystem Instance { get; private set; }
 
         private SparseSet<BehaviorComponent> sparseBehavior = new SparseSet<BehaviorComponent>();
 
 
 
-        [SerializeField] private float behaviorTickRate = 0.2f; // 5 Hz
+        private float behaviorTickRate = 0.2f; // 5 Hz
         private float behaviorTimer;
 
-        private void Awake()
+        public void Start()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            Launcher.Instance.LevelManager.OnLevelChange += ClearSystem;            
 
         }
 
@@ -62,8 +49,8 @@ namespace Scripts.Systems
 
         private void RunBehavior()
         {
-            var healthSystem = HealthSystem.Instance;
-            var movementSystem = MovementSystem.Instance;
+            var healthSystem = Launcher.Instance.HealthSystem;
+            var movementSystem = Launcher.Instance.MovementSystem;
 
             for (int i = 0; i < sparseBehavior.Count; i++)
             {

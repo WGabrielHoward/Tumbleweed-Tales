@@ -6,11 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-[DefaultExecutionOrder(-100)]
-public class LevelManager : MonoBehaviour
+public class LevelManager 
 {
-    public static LevelManager Instance { get; private set; }
-
     public static PersistentData pData;
 
     private int buildIndex;
@@ -23,77 +20,50 @@ public class LevelManager : MonoBehaviour
     public event Action OnLevelChange;
 
 
-
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
     // Start is called before the first frame update
-    void Start()
+    public LevelManager()
     {
 
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         nextSceneIndex = buildIndex + 1;
         titleScreenIndex = 0; // SceneManager.GetSceneByName("TitleScreen").buildIndex;   // should be 0 aka main menu
         firstLevel = 1;
-        pData = PersistentData.Instance;
+        pData = Launcher.Instance.Persistent;
 
-        ScoreSystem.Instance.ResetLevelScore();
+        Launcher.Instance.ScoreSystem.ResetLevelScore();
 
-
-        if (GameStateSystem.Instance != null)
-        {
-            GameStateSystem.Instance.TriggerPlay();
-            GameStateSystem.Instance.OnStateChanged += OnGameStateChanged;
-        }
+        Launcher.Instance.GameStateSystem.TriggerPlay();
+        Launcher.Instance.GameStateSystem.OnStateChanged += OnGameStateChanged;
+        
     }
 
-    private void Update()
+    public void Update()
     {
-        HandleStateInput(GameStateSystem.Instance.CurrentState);
+        HandleStateInput(Launcher.Instance.GameStateSystem.CurrentState);
 
     }
 
-    private void OnEnable()
-    {
-        if (GameStateSystem.Instance != null)
-        {
-            GameStateSystem.Instance.OnStateChanged += OnGameStateChanged;
-        }
-    }
-
-    private void OnDisable()
-    {        
-        if (GameStateSystem.Instance != null)
-        {
-            GameStateSystem.Instance.OnStateChanged -= OnGameStateChanged;
-        }
-    }
+    
 
     public void LoadLevel(int levelIndex)
     {
         OnLevelChange?.Invoke();
-        ScoreSystem.Instance.ResetLevelScore();
+        Launcher.Instance.ScoreSystem.ResetLevelScore();
         SceneManager.LoadScene(levelIndex);     // 0 = main menu, buildIndex = this level, nextSceneIndex = next level
-        GameStateSystem.Instance.TriggerPlay();
+        Launcher.Instance.GameStateSystem.TriggerPlay();
         buildIndex = levelIndex;
-        currentLevel = levelIndex;
         nextSceneIndex = levelIndex + 1;
+        if (levelIndex != 0)
+        {
+            currentLevel = levelIndex;
+        }
     }
 
 
     public void NextLevel()
     {
         // adding currentLevelScore to total
-        pData.AddToTotalScore(ScoreSystem.Instance.GetCurrentLevelScore());
+        pData.AddToTotalScore(Launcher.Instance.ScoreSystem.GetCurrentLevelScore());
         
         if(nextSceneIndex>= SceneManager.sceneCountInBuildSettings)
         {
@@ -140,7 +110,7 @@ public class LevelManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.P))
                 {
                     Debug.Log("Pause Triggered");
-                    GameStateSystem.Instance.TriggerPause();
+                    Launcher.Instance.GameStateSystem.TriggerPause();
                 }
                 break;         
             case GameState.Pause:
@@ -159,7 +129,7 @@ public class LevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            GameStateSystem.Instance.TriggerPlay(); // play
+            Launcher.Instance.GameStateSystem.TriggerPlay(); // play
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

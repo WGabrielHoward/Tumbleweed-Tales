@@ -10,15 +10,16 @@ public class TitleMenuUI : MonoBehaviour
     [SerializeField] private TMPro.TMP_InputField playerName;
     [SerializeField] private GameObject hiddenObj;
     private bool hidden;
-
+    PersistentData pData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerName.characterLimit = 12;
-        if (PersistentData.Instance != null)
+        pData = PersistentData.Instance;
+        if (pData != null)
         {
-            PersistentData.Instance.TopScoreUpdate();
+            pData.TopScoreUpdate();
             TopScoreUpdate();
             ClearTotalScore();
         }
@@ -29,28 +30,28 @@ public class TitleMenuUI : MonoBehaviour
 
     public void StartPlay()
     {
-        if (PersistentData.Instance != null)
+        if (pData != null)
         {
-            PersistentData.Instance.playerName = playerName.text.ToString();
+            pData.playerName = playerName.text.ToString();
         }
-        LevelManager.Instance.LoadLevel(LevelManager.Instance.firstLevel);
+        Launcher.Instance.LevelManager.LoadLevel(Launcher.Instance.LevelManager.firstLevel);
     }
 
     public void TopScoreUpdate()
     {
         //pMan.Dump();
-        TopScore.text = $"Top Score: {PersistentData.Instance.GetTopName()} {PersistentData.Instance.GetTopPoints()}";
+        TopScore.text = $"Top Score: {pData.GetTopName()} {pData.GetTopPoints()}";
     }
 
     public void ClearMemory()
     {
-        PersistentData.Instance.ClearTopScore();
+        pData.ClearTopScore();
         TopScoreUpdate();
     }
 
     public void ClearTotalScore()
     {
-        PersistentData.Instance.ClearTotalScore();
+        pData.ClearTotalScore();
     }
 
     public void HideOrReveal()
@@ -75,7 +76,7 @@ public class TitleMenuUI : MonoBehaviour
 
     public void Exit()
     {
-        PersistentData.Instance.SaveTopScore();     // enable this to autoSave any changes, else it will go with whatever was last saved
+        pData.SaveTopScore();     // enable this to autoSave any changes, else it will go with whatever was last saved
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else

@@ -13,24 +13,15 @@ namespace Scripts.Systems
     }
 
 
-    public class GameStateSystem : MonoBehaviour
+    public class GameStateSystem 
     {
-        public static GameStateSystem Instance { get; private set; }
-
         public GameState CurrentState { get; private set; } = GameState.Undefined;
 
         public event System.Action<GameState, GameState> OnStateChanged;
 
-        private void Awake()
+        public GameStateSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
 
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         private void SetState(GameState newState)

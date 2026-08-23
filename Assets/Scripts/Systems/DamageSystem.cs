@@ -1,34 +1,20 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿
 using Scripts.Components;
 
-using Scripts.Data;
 using Scripts.Entities_Sets;
 
 namespace Scripts.Systems
 {
-    public class DamageSystem : MonoBehaviour
+    public class DamageSystem
     {
 
         public static SparseSet<DamageComponent> sparseDamage = new SparseSet<DamageComponent>();
 
-        public static DamageSystem Instance;
 
-        private void Awake()
+        public DamageSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            Launcher.Instance.LevelManager.OnLevelChange += ClearSystem;
+            
         }
 
         // ---------------------- Registration ----------------------

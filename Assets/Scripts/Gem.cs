@@ -12,7 +12,7 @@ public class Gem : MonoBehaviour
     private void Collect()
     {
         UnityEngine.Debug.Log($"Collect {pointValue}");
-        ScoreSystem.Instance.AddScore(pointValue);
+        Launcher.Instance.ScoreSystem.AddScore(pointValue);
         Destroy(gameObject);
     }
 

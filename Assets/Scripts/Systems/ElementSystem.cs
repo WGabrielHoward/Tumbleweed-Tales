@@ -7,28 +7,16 @@ using Scripts.Entities_Sets;
 
 namespace Scripts.Systems
 {
-    public class ElementSystem : MonoBehaviour
+    public class ElementSystem 
     {
 
         public static SparseSet<ElementComponent> sparseElement = new SparseSet<ElementComponent>();
 
-        public static ElementSystem Instance;
 
-        private void Awake()
+
+        public ElementSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            Launcher.Instance.LevelManager.OnLevelChange += ClearSystem;
         }
 
         // ---------------------- Registration ----------------------

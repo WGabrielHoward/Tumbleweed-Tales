@@ -21,7 +21,7 @@ public class LevelCanvas : MonoBehaviour
 
     void Awake()
     {
-        pData = PersistentData.Instance;
+        pData = Launcher.Instance.Persistent;
     }
 
     //Start is called before the first frame update
@@ -35,36 +35,19 @@ public class LevelCanvas : MonoBehaviour
     
     private void OnEnable()
     {
-        if (ScoreSystem.Instance != null)
-        {   
-            ScoreSystem.Instance.OnScoreChanged += ScoreUpdate;
-            ScoreSystem.Instance.OnScoreChanged += TotalScoreUpdate;
-        }
-        if (PersistentData.Instance != null)
-        {
-            PersistentData.Instance.TopScoreChanged += TopScoreUpdate;
-        }
-        if (GameStateSystem.Instance != null)
-        {
-            GameStateSystem.Instance.OnStateChanged += OnGameStateChanged;
-        }
+        Launcher.Instance.ScoreSystem.OnScoreChanged += ScoreUpdate;
+        Launcher.Instance.ScoreSystem.OnScoreChanged += TotalScoreUpdate;
+        Launcher.Instance.Persistent.TopScoreChanged += TopScoreUpdate;
+        Launcher.Instance.GameStateSystem.OnStateChanged += OnGameStateChanged;
+        
     }
 
     private void OnDisable()
     {
-        if (ScoreSystem.Instance != null)
-        {   
-            ScoreSystem.Instance.OnScoreChanged -= ScoreUpdate;
-            ScoreSystem.Instance.OnScoreChanged -= TotalScoreUpdate;
-        }
-        if (PersistentData.Instance != null)
-        {
-            PersistentData.Instance.TopScoreChanged -= TopScoreUpdate;
-        }
-        if (GameStateSystem.Instance != null)
-        {
-            GameStateSystem.Instance.OnStateChanged -= OnGameStateChanged;
-        }
+        Launcher.Instance.ScoreSystem.OnScoreChanged -= ScoreUpdate;
+        Launcher.Instance.ScoreSystem.OnScoreChanged -= TotalScoreUpdate;
+        Launcher.Instance.Persistent.TopScoreChanged -= TopScoreUpdate;
+        Launcher.Instance.GameStateSystem.OnStateChanged -= OnGameStateChanged;
     }
 
     // Now we only call the screen setActives when state is changed

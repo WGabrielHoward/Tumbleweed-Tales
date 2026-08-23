@@ -17,7 +17,7 @@ namespace Scripts.Player
         private void Start()
         {
             entityId = gameObject.GetComponent<EntityBridge>().EntityId;
-            health = HealthSystem.Instance.GetMaxHealth(entityId);
+            health = Launcher.Instance.HealthSystem.GetMaxHealth(entityId);
             levelCanvas = FindAnyObjectByType<LevelCanvas>();
             Assert.IsNotNull(levelCanvas);
             UpdateUI(health);
@@ -25,8 +25,8 @@ namespace Scripts.Player
 
         void Awake()
         {
-            HealthSystem.Instance.OnHealthChanged += HealthChanged;
-            DeathSystem.Instance.OnEntityDied += EntityDied;
+            Launcher.Instance.HealthSystem.OnHealthChanged += HealthChanged;
+            Launcher.Instance.DeathSystem.OnEntityDied += EntityDied;
         }
 
 
@@ -43,7 +43,7 @@ namespace Scripts.Player
         {
             if (deadEntityId == entityId)
             {
-                GameStateSystem.Instance.TriggerDefeat();
+                Launcher.Instance.GameStateSystem.TriggerDefeat();
             }
         }
 

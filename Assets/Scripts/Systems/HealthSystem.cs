@@ -6,30 +6,18 @@ using UnityEngine;
 
 namespace Scripts.Systems
 {
-    public class HealthSystem : MonoBehaviour
+    public class HealthSystem
     {
-        public static HealthSystem Instance { get; private set; }
 
         private SparseSet<HealthComponent> sparseHealth = new SparseSet<HealthComponent>();
 
         // Pure signals — no gameplay logic
         public event Action<int, int> OnHealthChanged; // entityId, newHealth
 
-        private void Awake()
+        public HealthSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
 
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            Launcher.Instance.LevelManager.OnLevelChange += ClearSystem;
         }
 
         // ---------------------- Registration ----------------------
@@ -62,7 +50,7 @@ namespace Scripts.Systems
             OnHealthChanged?.Invoke(entityId, health.currentHealth);
 
 
-            if (health.currentHealth <= 0 && !DeathSystem.Instance.IsEntityDead(entityId))
+            if (health.currentHealth <= 0 && !Launcher.Instance.DeathSystem.IsEntityDead(entityId))
             {
                 Debug.Log("Entity " + entityId + " has died.");
                 AttachDeath(entityId);
@@ -96,7 +84,7 @@ namespace Scripts.Systems
             {
                 DeathDelay = 2f     // I need to set the delay by entity type or additional logic
             };
-            DeathSystem.Instance.Register(entityId, death);
+            Launcher.Instance.DeathSystem.Register(entityId, death);
         }
 
         // ---------------------- Queries ----------------------

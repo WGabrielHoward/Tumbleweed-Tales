@@ -5,33 +5,18 @@ using UnityEngine;
 namespace Scripts.Systems
 {
     
-    public class MovementSystem : MonoBehaviour
+    public class MovementSystem 
     {
         
-        public static MovementSystem Instance { get; private set; }
-
         private SparseSet<MovementComponent> sparseMovement = new SparseSet<MovementComponent>();
 
-
-        private void Awake()
+        public MovementSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
 
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            if (LevelManager.Instance != null)
-            {
-                Debug.Log("Subscribe to ClearMovementSystem");
-                LevelManager.Instance.OnLevelChange += ClearSystem;
-            }
+            Launcher.Instance.LevelManager.OnLevelChange += ClearSystem;
         }
 
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
 
             for (int i = 0; i < sparseMovement.Count; i++)

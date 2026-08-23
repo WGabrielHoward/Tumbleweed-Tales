@@ -16,7 +16,7 @@ namespace Scripts.Entities_Sets
 
             bridge.Initialize(entityId);
 
-            EntityRegistry.Instance.Register(entityId, bridge);
+            Launcher.Instance.EntityRegistry.Register(entityId, bridge);
 
             return entityId;
         }
@@ -32,7 +32,7 @@ namespace Scripts.Entities_Sets
                 moveInput = 0
             };
 
-            MovementSystem.Instance.Register( entityId,  movement);
+            Launcher.Instance.MovementSystem.Register( entityId,  movement);
         }
 
 
@@ -44,7 +44,7 @@ namespace Scripts.Entities_Sets
                 maxHealth = maxHealth
             };
 
-            HealthSystem.Instance.Register( entityId,   health);
+            Launcher.Instance.HealthSystem.Register( entityId,   health);
         }
 
 
@@ -55,7 +55,7 @@ namespace Scripts.Entities_Sets
                 DamageAmount = damage
             };
 
-            DamageSystem.Instance.Register( entityId,   component);
+            Launcher.Instance.DamageSystem.Register( entityId,   component);
         }
 
 
@@ -66,7 +66,7 @@ namespace Scripts.Entities_Sets
                 elementType = element
             };
 
-            ElementSystem.Instance.Register( entityId, component);
+            Launcher.Instance.ElementSystem.Register( entityId, component);
         }
 
         // Refactor BehaviorComponent to take out Unity specifics like Transform.
@@ -81,7 +81,7 @@ namespace Scripts.Entities_Sets
                 intent = NPCIntent.Idle,
                 type = npcType
             };
-            BehaviorSystem.Instance.Register(entityId, behaviorComponent);
+            Launcher.Instance.BehaviorSystem.Register(entityId, behaviorComponent);
         }
 
 

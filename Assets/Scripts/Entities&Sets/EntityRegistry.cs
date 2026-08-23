@@ -1,34 +1,16 @@
 ﻿using Scripts.UnityBridges;
-using Scripts.Systems;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
-using UnityEngine;
-
 namespace Scripts.Entities_Sets
 {
 
-    public class EntityRegistry : MonoBehaviour
+    public class EntityRegistry
     {
         public static EntityRegistry Instance { get; private set; }
 
         // Entity ↔ GameObject mapping
         private readonly Dictionary<int, EntityBridge> entities = new();
 
-        private void Awake()
-        {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-        }
-               
+                     
 
         public void Register(int entityId, EntityBridge entityBridge)
         {

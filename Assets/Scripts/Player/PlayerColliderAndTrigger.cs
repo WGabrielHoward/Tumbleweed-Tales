@@ -42,14 +42,14 @@ namespace Scripts.Player
         {
             if (obj.TryGetComponent<EntityBridge>(out var bridge))
             {
-                Element element = ElementSystem.Instance.GetElement(bridge.EntityId);
+                Element element = Launcher.Instance.ElementSystem.GetElement(bridge.EntityId);
                 var effect = ElementRules.GetStatusForElement(element);
                 playerEffects.EffectsSwitch(effect, true);
             }
 
             if (obj.CompareTag("Victory"))
             {
-                GameStateSystem.Instance.TriggerVictory();
+                Launcher.Instance.GameStateSystem.TriggerVictory();
             }
         }
 
@@ -57,7 +57,7 @@ namespace Scripts.Player
         {
             if (obj.TryGetComponent<EntityBridge>(out var bridge))
             {
-                Element element = ElementSystem.Instance.GetElement(bridge.EntityId);
+                Element element = Launcher.Instance.ElementSystem.GetElement(bridge.EntityId);
                 var effect = ElementRules.GetStatusForElement(element);
                 playerEffects.EffectsSwitch(effect, false);
             }

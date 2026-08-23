@@ -4,24 +4,16 @@ using UnityEngine;
 namespace Scripts.Systems
 {
 
-    public class ScoreSystem : MonoBehaviour
+    public class ScoreSystem 
     {
-        public static ScoreSystem Instance { get; private set; }
 
         public event Action<int> OnScoreChanged;
 
         private int currentLevelScore;
 
-        private void Awake()
+        public ScoreSystem()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
 
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
 
         }
 

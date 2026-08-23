@@ -1,45 +1,27 @@
 ﻿using UnityEngine;
 using Scripts.Systems;
-using Scripts.Data;
-using Scripts.NPC;
-using System.Collections.Generic;
-using System.Data;
 using Scripts.Entities_Sets;
 
 [RequireComponent(typeof(PersistentData))]
 [RequireComponent(typeof(BehaviorSystem))]
-[RequireComponent(typeof(BehaviorSystem ))]
-[RequireComponent(typeof(DamageSystem))]
-[RequireComponent(typeof(GameStateSystem))]
-[RequireComponent(typeof(HealthSystem))]
-[RequireComponent(typeof(MovementSystem))]
-[RequireComponent(typeof(ScoreSystem))]
-[RequireComponent(typeof(CombatSystem))]
-[RequireComponent(typeof(DeathSystem))]
-[RequireComponent(typeof(ElementSystem))]
-[RequireComponent(typeof(EntityRegistry))]
-[RequireComponent(typeof(LevelManager))]
-
 public class Launcher : MonoBehaviour
 {
     public static Launcher Instance { get; private set; }
 
-    // Persistent Data
-    public PersistentData persistentData;
-
+    public PersistentData Persistent { get; private set; }
     // Systems
-    public BehaviorSystem behaviorSystem;
-    public DamageSystem damageSystem;
-    public GameStateSystem gameStateSystem;
-    public HealthSystem healthSystem;
-    public MovementSystem movementSystem;
-    public ScoreSystem scoreSystem;
-    public CombatSystem combatSystem;
-    public DeathSystem deathSystem;
-    public ElementSystem elementSystem;
+    public BehaviorSystem BehaviorSystem { get; private set; }
+    public DamageSystem DamageSystem { get; private set; }
+    public GameStateSystem GameStateSystem { get; private set; }
+    public HealthSystem HealthSystem { get; private set; }
+    public MovementSystem MovementSystem { get; private set; }
+    public ScoreSystem ScoreSystem { get; private set; }
+    public CombatSystem CombatSystem { get; private set; }
+    public DeathSystem DeathSystem { get; private set; }
+    public ElementSystem ElementSystem { get; private set; }
 
-    public EntityRegistry entityRegistry;
-    public LevelManager levelManager;
+    public EntityRegistry EntityRegistry { get; private set; }
+    public LevelManager LevelManager { get; private set; }
 
     void Awake()
     {
@@ -59,23 +41,39 @@ public class Launcher : MonoBehaviour
 
     private void LaunchSystems()
     {
-        PersistentData  persistentData  = gameObject.GetComponent<PersistentData >();
-        BehaviorSystem  behaviorSystem  = gameObject.GetComponent<BehaviorSystem >();
-        DamageSystem    damageSystem    = gameObject.GetComponent<DamageSystem   >();
-        GameStateSystem gameStateSystem = gameObject.GetComponent<GameStateSystem>();
-        HealthSystem    healthSystem    = gameObject.GetComponent<HealthSystem   >();
-        MovementSystem  movementSystem  = gameObject.GetComponent<MovementSystem >();
-        ScoreSystem     scoreSystem     = gameObject.GetComponent<ScoreSystem    >();
-        CombatSystem    combatSystem    = gameObject.GetComponent<CombatSystem   >();
-        DeathSystem     deathSystem     = gameObject.GetComponent<DeathSystem    >();
-        ElementSystem   elementSystem   = gameObject.GetComponent<ElementSystem  >();
-        EntityRegistry  entityRegistry  = gameObject.GetComponent<EntityRegistry >();
-        LevelManager    levelManager    = gameObject.GetComponent<LevelManager   >();
 
+        GameStateSystem = new GameStateSystem();
+        ScoreSystem = new ScoreSystem();
+         
+        Persistent = gameObject.GetComponent<PersistentData>();
+         
+        LevelManager    = new LevelManager   ();    // Req ScoreS, GameSS
+        DamageSystem    = new DamageSystem   ();    // Req levMan 
+        BehaviorSystem  = gameObject.GetComponent<BehaviorSystem>();
+        HealthSystem    = new HealthSystem   ();
+        MovementSystem  = new MovementSystem (); 
+        CombatSystem    = new CombatSystem   ();
+        DeathSystem     = new DeathSystem    ();
+        ElementSystem   = new ElementSystem  ();
+        EntityRegistry  = new EntityRegistry ();
+        
+
+    }
+
+    public void Update()
+    {
+        LevelManager.Update();
+
+    }
+
+    public void FixedUpdate()
+    {
+        MovementSystem.FixedUpdate();
+        DeathSystem.FixedUpdate();
     }
 
     private void OnDestroy()
     {
-        
+       
     }
 }

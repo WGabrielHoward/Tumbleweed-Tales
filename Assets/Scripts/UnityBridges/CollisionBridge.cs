@@ -30,7 +30,7 @@ namespace Scripts.UnityBridges
             if (!other.TryGetComponent<EntityBridge>(out var otherEntity))
                 return;
 
-            CombatSystem.Instance.ResolveHit(entityBridge.EntityId, otherEntity.EntityId );
+            Launcher.Instance.CombatSystem.ResolveHit(entityBridge.EntityId, otherEntity.EntityId );
         }
     }
 }
