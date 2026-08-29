@@ -1,6 +1,7 @@
 
 using System.Net.NetworkInformation;
 using UnityEngine;
+using Scripts.Systems;
 
 //[DefaultExecutionOrder(500)]
 public class LevelCanvas : MonoBehaviour
@@ -16,43 +17,56 @@ public class LevelCanvas : MonoBehaviour
     public GameObject VictoryScreen;
     public GameObject PauseScreen;
 
-    private LevelManager pMan;
-    private PlayState lastState;
+    private PersistentData pData;
+
+    void Awake()
+    {
+        pData = Launcher.Instance.Persistent;
+    }
+
     //Start is called before the first frame update
     void Start()
     {
-        pMan = LevelManager.ManInstance;
+        
         PlayingSetup();
+        TopScoreUpdate(pData.GetTopName(), pData.GetTopPoints());
     }
 
-    // change the game over update to a listerner or event (check that it is actually better)
-    void Update()
+    
+    private void OnEnable()
     {
-        PlayState tmpState = pMan.GetState();
-        if (tmpState != lastState)
-        {
-            ChangePlayState(tmpState);
-            lastState = tmpState;
-        }
+        Launcher.Instance.ScoreSystem.OnScoreChanged += ScoreUpdate;
+        Launcher.Instance.ScoreSystem.OnScoreChanged += TotalScoreUpdate;
+        Launcher.Instance.Persistent.TopScoreChanged += TopScoreUpdate;
+        Launcher.Instance.GameStateSystem.OnStateChanged += OnGameStateChanged;
+        
+    }
+
+    private void OnDisable()
+    {
+        Launcher.Instance.ScoreSystem.OnScoreChanged -= ScoreUpdate;
+        Launcher.Instance.ScoreSystem.OnScoreChanged -= TotalScoreUpdate;
+        Launcher.Instance.Persistent.TopScoreChanged -= TopScoreUpdate;
+        Launcher.Instance.GameStateSystem.OnStateChanged -= OnGameStateChanged;
     }
 
     // Now we only call the screen setActives when state is changed
-    private void ChangePlayState(PlayState newState)
+    private void OnGameStateChanged(GameState from, GameState newState)
     {
         switch (newState)
         {
-            case PlayState.gameOver:
+            case GameState.Defeat:
                 GameOverScreen.SetActive(true);
                 TotalScoreText.gameObject.SetActive(true);
                 break;
-            case PlayState.playing:
+            case GameState.Playing:
                 PlayingSetup();
                 break;
-            case PlayState.victory:
+            case GameState.Victory:
                 VictoryScreen.SetActive(true);
                 NotPlayingSetup();
                 break;
-            case PlayState.paused:
+            case GameState.Pause:
                 PauseScreen.SetActive(true);
                 NotPlayingSetup();
                 break;
@@ -71,29 +85,29 @@ public class LevelCanvas : MonoBehaviour
         HealthText.gameObject.SetActive(true);
     }
 
-    // Screen actives called outside of this
-    // only used for paused and victory right now
     private void NotPlayingSetup()
     {
         TotalScoreText.gameObject.SetActive(true);
         TopScore.gameObject.SetActive(true);
     }
 
-    public void ScoreUpdate()
+    public void ScoreUpdate(int currentLevelScore)
     {
-        ScoreText.text = $"Score : {pMan.GetScore()}";
+        UnityEngine.Debug.Log($"LevelCanvas: ScoreUpdate({currentLevelScore})");
+        ScoreText.text = $"Score : {currentLevelScore}";
     }
 
-    public void TotalScoreUpdate()
+    public void TotalScoreUpdate(int levelScore)
     {
-        // pMan.GetTotalScore() returns sum of all prior and current level points
-        TotalScoreText.text = $"Total Score: {pMan.GetTotalScore()}";
+        UnityEngine.Debug.Log($"LevelCanvas: TotalScoreUpdate({levelScore})");
+        TotalScoreText.text = $"Total Score: {pData.GetTotalScore()+levelScore}";
     }
 
-    public void TopScoreUpdate()
+    public void TopScoreUpdate(string topName, int topScore)
     {
         //pMan.Dump();
-        TopScore.text = pMan.GetTopScoreText();
+        UnityEngine.Debug.Log($"LevelCanvas: TopScoreUpdate({topName}, {topScore})");
+        TopScore.text =  ($"Top Score: {topName} {topScore}");
     }
 
     public void HealthUpdate(int health)

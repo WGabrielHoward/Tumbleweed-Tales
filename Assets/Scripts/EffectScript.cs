@@ -4,28 +4,20 @@ using UnityEngine;
 
 public enum Effect
 {
-    unnassigned,
-    none,
-    damage,
-    burn,
-    freeze,
-    poison,
-    heal
-    
+    None,
+    Damage,
+    Burn,
+    Freeze,
+    Poison,
+    Heal
+
 }
 
 public class EffectScript : MonoBehaviour
 {
     [SerializeField] private Effect thisEffect;
 
-    void Start()
-    {
-        if (thisEffect==Effect.unnassigned)
-        {
-            thisEffect = Effect.none;
-        }
-    }
-
+    
     public virtual Effect GetEffect()
     {
         return thisEffect;

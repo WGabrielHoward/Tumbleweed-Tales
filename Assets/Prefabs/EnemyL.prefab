@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 744392609835904184}
   - component: {fileID: 5257056113352207598}
   - component: {fileID: 1888021200970485279}
-  - component: {fileID: 3972035694878632337}
+  - component: {fileID: 5420944454982896678}
+  - component: {fileID: 5162324250056710885}
+  - component: {fileID: 3244721419563995458}
   m_Layer: 0
   m_Name: EnemyL
   m_TagString: NPC
@@ -90,6 +92,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!54 &1888021200970485279
 Rigidbody:
@@ -118,7 +121,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3972035694878632337
+--- !u!114 &5420944454982896678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,14 +130,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 854097267668045109}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a988cc22f2290045866a09c95e513ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 71fe61dec88502544bbc9547c0d5aa0e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NPC.EnemyBurns
-  target: {fileID: 0}
-  forceToTarget: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NPC.NonPlayerCharacter
+  npcType: 0
+  speed: 1
   health: 10
-  damage: 1
-  damagePerTick: 10
-  tickRate: 1
-  thisEffect: {fileID: 0}
-  damageOverTime: {fileID: 0}
+  aggroRange: 50
+  damageAmount: 5
+  element: 1
+  target: {fileID: 0}
+--- !u!114 &5162324250056710885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854097267668045109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72d99fcbe82c4c46a7062d8a27b8aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.UnityBridges.EntityBridge
+--- !u!114 &3244721419563995458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854097267668045109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8543fc9ea8e51e04c83f9ee019ee09af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.UnityBridges.CollisionBridge

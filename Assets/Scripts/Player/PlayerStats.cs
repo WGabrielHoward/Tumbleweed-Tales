@@ -1,71 +1,55 @@
-using System.Collections;
+
 using UnityEngine;
 
-using Scripts.NPC;
+using Scripts.Systems;
+using Scripts.Components;
+using NUnit.Framework;
+using Scripts.UnityBridges;
 
 namespace Scripts.Player
 {
     public class PlayerStats : MonoBehaviour
     {
-        private PlayerScriptManager playSMan;
-        private PlayerController playerController;
+        private int entityId;
+        private int health;
+        private LevelCanvas levelCanvas;
 
-        [Header("Player Stats")]
-        [SerializeField] private float forwardSpeed;
-        [SerializeField] private int health;
-
-        LevelCanvas levelCanvas;
-
-        private void Awake()
-        {
-            playSMan = gameObject.GetComponent<PlayerScriptManager>();
-            
-        }
         private void Start()
         {
+            entityId = gameObject.GetComponent<EntityBridge>().EntityId;
+            health = Launcher.Instance.HealthSystem.GetMaxHealth(entityId);
             levelCanvas = FindAnyObjectByType<LevelCanvas>();
-            playerController = playSMan.GetPlayerController();
-            PullForwardSpeed();
-            PullHealth();
+            Assert.IsNotNull(levelCanvas);
+            UpdateUI(health);
         }
 
-        public float GetForwardSpeed()
+        void Awake()
         {
-            return forwardSpeed;
-        }
-
-        public void SetForwardSpeed(float newSpeed)
-        {
-            forwardSpeed = newSpeed;
-            playerController.SetForwardSpeed(forwardSpeed);
-        }
-
-        private void PullForwardSpeed()
-        {
-            forwardSpeed = playSMan.GetForwardSpeed();
-        }
-        private void PullHealth()
-        {
-            health = playSMan.GetHealth();
+            Launcher.Instance.HealthSystem.OnHealthChanged += HealthChanged;
+            Launcher.Instance.DeathSystem.OnEntityDied += EntityDied;
         }
 
 
-        public void Damage(int damage)
+        public void HealthChanged(int nEntityId, int currentHealth)
         {
-            health -= damage;
-            UpdateHealthText();
-            if (health <= 0)
+            if (nEntityId == entityId)
             {
-                LevelManager.ManInstance.GameOver();
+                UpdateUI(currentHealth);
+            }
+
+        }
+
+        public void EntityDied(int deadEntityId)
+        {
+            if (deadEntityId == entityId)
+            {
+                Launcher.Instance.GameStateSystem.TriggerDefeat();
             }
         }
 
-        private void UpdateHealthText()
+        private void UpdateUI(int health)
         {
-            if (levelCanvas)
-            {
-                levelCanvas.HealthUpdate(health);
-            }
+            levelCanvas.HealthUpdate(health);
         }
 
     }

@@ -1,223 +1,173 @@
 
+using Scripts.Systems;
+using System;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum PlayState
-{
-    waiting,
-    playing,
-    paused,
-    gameOver,
-    victory,
-    undefined
-}
 
-public class LevelManager : MonoBehaviour
+public class LevelManager 
 {
-    private int m_Points;       
-    private static PlayState state;
-
     public static PersistentData pData;
-    public static LevelManager ManInstance;
 
-    private LevelCanvas levelCanvas;
     private int buildIndex;
     private int nextSceneIndex;
+    private int titleScreenIndex;
 
-    private void Awake()
-    {
-        if (ManInstance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
+    public int firstLevel { get; private set; }
+    public int currentLevel { get; private set; }
 
-        m_Points = 0;
+    public event Action OnLevelChange;
 
-        ManInstance = this;
-        state = PlayState.waiting;
-        pData = PersistentData.Instance;
-    }
 
     // Start is called before the first frame update
-    void Start()
+    public LevelManager()
     {
-        m_Points = 0;
-        state = PlayState.playing;
 
-        levelCanvas = FindAnyObjectByType<LevelCanvas>();
-
-        UpdateTotalScore();
-        UpdateTopScore();
         buildIndex = SceneManager.GetActiveScene().buildIndex;
         nextSceneIndex = buildIndex + 1;
-    }
+        titleScreenIndex = 0; // SceneManager.GetSceneByName("TitleScreen").buildIndex;   // should be 0 aka main menu
+        firstLevel = 1;
+        pData = Launcher.Instance.Persistent;
 
-    private void Update()
-    {
-        switch (state)
-        {
-            case PlayState.gameOver:
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    RestartLevel();
-                }
-                if (Input.GetKeyDown(KeyCode.M))
-                {
-                    MainMenu();
-                }
-                break;
-            case PlayState.victory:
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    NextLevel();
-                }
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    RestartLevel();
-                }
-                if (Input.GetKeyDown(KeyCode.M))
-                {
-                    MainMenu();
-                }
-                break;
-            case PlayState.playing:
-                if (Input.GetKeyDown(KeyCode.P))
-                { Pause(); }
-                break;
-            case PlayState.paused:
-                if (Input.GetKeyDown(KeyCode.P))
-                { Play(); }
-                break;
-            
-        }
+        Launcher.Instance.ScoreSystem.ResetLevelScore();
+
+        Launcher.Instance.GameStateSystem.TriggerPlay();
+        Launcher.Instance.GameStateSystem.OnStateChanged += OnGameStateChanged;
         
     }
 
-    public void MainMenu()
+    public void Update()
     {
-        SceneManager.LoadScene("TitleScreen"); // 0, should be TitleScreen
-        pData.TopScoreUpdate();
-        Play();
+        HandleStateInput(Launcher.Instance.GameStateSystem.CurrentState);
+
     }
 
-    public void RestartLevel()
+    
+
+    public void LoadLevel(int levelIndex)
     {
-        SceneManager.LoadScene(buildIndex); // Restart this level
-        Play();
+        OnLevelChange?.Invoke();
+        Launcher.Instance.ScoreSystem.ResetLevelScore();
+        SceneManager.LoadScene(levelIndex);     // 0 = main menu, buildIndex = this level, nextSceneIndex = next level
+        Launcher.Instance.GameStateSystem.TriggerPlay();
+        buildIndex = levelIndex;
+        nextSceneIndex = levelIndex + 1;
+        if (levelIndex != 0)
+        {
+            currentLevel = levelIndex;
+        }
     }
+
 
     public void NextLevel()
     {
-        AddLevelToTotal();
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        // adding currentLevelScore to total
+        pData.AddToTotalScore(Launcher.Instance.ScoreSystem.GetCurrentLevelScore());
+        
+        if(nextSceneIndex>= SceneManager.sceneCountInBuildSettings)
         {
-            SceneManager.LoadScene(nextSceneIndex); // Next Level
-            pData.TopScoreUpdate();
+            nextSceneIndex = titleScreenIndex;
         }
-        else
+
+        LoadLevel(nextSceneIndex);
+
+    }
+
+  
+    void OnGameStateChanged(GameState from, GameState to)
+    {
+        Debug.Log($"OnGameStateChanged, from({from}) to({to})");
+        switch (to)
         {
-            SceneManager.LoadScene(0);  // 0, should be TitleScreen
-            pData.TopScoreUpdate();
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Pause:
+                Debug.Log("Paused");
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.Defeat:
+                Time.timeScale = 0f;
+                pData.SaveTopScore();
+                break;
+
+            case GameState.Victory:
+                Time.timeScale = 0f;
+                pData.SaveTopScore();
+                break;
         }
-        Play();
+    }
+  
+
+    void HandleStateInput(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Playing:
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    Debug.Log("Pause Triggered");
+                    Launcher.Instance.GameStateSystem.TriggerPause();
+                }
+                break;         
+            case GameState.Pause:
+                HandlePauseInput();
+                break;
+            case GameState.Defeat:
+                HandleGameOverInput();                
+                break;
+            case GameState.Victory:
+                HandleVictoryInput();
+                break;
+        }
     }
 
-    private void SetState(PlayState newState)
+    void HandlePauseInput()
     {
-        state = newState;
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Launcher.Instance.GameStateSystem.TriggerPlay(); // play
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            LoadLevel(buildIndex);                  // restart level
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadLevel(titleScreenIndex);            // go to main menu
+        }
     }
 
-    public void AddPoints(int points)
-    {
-        m_Points += points;
-        UpdateLevelScore();
+    void HandleGameOverInput()
+    {        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            LoadLevel(buildIndex);                  // restart level
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadLevel(titleScreenIndex);            // go to main menu
+        }
     }
 
-    public void AddLevelToTotal()
+    void HandleVictoryInput()
     {
-        pData.AddToTotalScore(m_Points);
-        UpdateTopScore();
-    }
-    
-    public int GetScore()
-    {
-        return m_Points;
-    }
-
-    public int GetTotalScore()
-    {
-        // returns sum of total score and current level score
-        return pData.GetTotalScore() + m_Points;
-    }
-
-    public void UpdateLevelScore()
-    {
-        levelCanvas.ScoreUpdate();
-        UpdateTotalScore();
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            LoadLevel(buildIndex);                  // restart level
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadLevel(titleScreenIndex);            // go to main menu
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            NextLevel();                            // go to next level
+        }
     }
 
-    public void UpdateTotalScore()
-    {
-        levelCanvas.TotalScoreUpdate();
-    }
 
-    public void UpdateTopScore()
-    {
-        levelCanvas.TopScoreUpdate();
-    }
-
-    public string GetTopScoreText()
-    {
-        string topScoreText = $"Top Score: {pData.GetTopName()} {pData.GetTopPoints()}";
-        return topScoreText;
-    }
-
-    private void TimeStop()
-    {
-        Time.timeScale = 0f;
-    }
-
-    private void TimeStart()
-    {
-        Time.timeScale = 1f;
-    }
-
-    public void GameOver()
-    {
-        //Pause();
-        TimeStop();
-        SetState(PlayState.gameOver);
-        pData.SaveTopScore();
-    }
-
-    public void Victory()
-    {
-        TimeStop();
-        SetState(PlayState.victory);
-        pData.SaveTopScore();
-    }
-
-    public PlayState GetState()
-    {
-        return state;
-    }
-
-    public void Pause()
-    {
-        SetState(PlayState.paused);
-        TimeStop();
-    }
-
-    public void Play()
-    {
-        SetState(PlayState.playing);
-        TimeStart();
-    }
-
-    public void Dump()
-    {
-        UnityEngine.Debug.Log("mainManager Exists!");
-
-    }
 }
